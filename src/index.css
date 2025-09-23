@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --header-h: 64px;
+}
+
+body {
+  @apply text-gray-900 bg-white;
+}
+
+.container {
+  @apply mx-auto max-w-7xl px-4;
+}
