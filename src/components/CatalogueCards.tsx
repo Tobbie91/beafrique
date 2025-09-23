@@ -32,25 +32,27 @@ export default function CatalogueCards({ items, getOutsideLink }: Props) {
             </Link>
 
             {/* Title bar (same emerald, yellow accent) */}
-         {/* Bottom panel (emerald all through) */}
-<div className="p-5 text-emerald-50">
-  {/* UK store CTA pill */}
-  <a
-    href={outside || "#"}
-    target={outside ? "_blank" : undefined}
-    rel={outside ? "noreferrer" : undefined}
-    aria-disabled={!outside}
-    className={`block rounded-full px-5 py-3 text-sm font-semibold transition text-emerald-900
-      ${outside
-        ? "bg-yellow-400 hover:bg-yellow-500"
-        : "bg-emerald-800/60 text-emerald-300 cursor-not-allowed pointer-events-none"}
-    `}
-  >
-    Buy from our UK store
-  </a>
+            {/* Bottom panel (emerald all through) */}
+            <div className="p-5 text-emerald-50">
+  {/* UK store CTA pill (centered) */}
+  <div className="flex justify-center">
+    <a
+      href={outside || "#"}
+      target={outside ? "_blank" : undefined}
+      rel={outside ? "noreferrer" : undefined}
+      aria-disabled={!outside}
+      className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition text-emerald-900
+        ${outside
+          ? "bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-emerald-900/30"
+          : "bg-emerald-800/60 text-emerald-300 opacity-60 cursor-not-allowed pointer-events-none"}
+      `}
+    >
+      Buy from our UK store
+    </a>
+  </div>
 
   {/* Optional tiny note under CTA */}
-  <p className="mt-2 text-xs text-emerald-200">
+  <p className="mt-2 text-xs text-emerald-200 text-center">
     {/* Ships from Portsmouth, United Kingdom */}
   </p>
 
