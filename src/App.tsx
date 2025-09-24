@@ -12,6 +12,7 @@ import Catalogue from './pages/Catalogue'
 import Client from './pages/Client'
 import OurTeam from './pages/OurTeam'
 import AdminNewProduct from './pages/AdminNewProduct'
+import RefundPolicy from './pages/RefundPolicy'
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/catalogue" element={<Catalogue />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/client" element={<Client />} />
+        <Route path="/refund-policy" element={<RefundPolicy />} />
         <Route path="/admin/products/new" element={<AdminNewProduct />} />
         {/* Keep PDP and legacy aliases working */}
         <Route path="/products/:slug" element={<ProductDetail />} />

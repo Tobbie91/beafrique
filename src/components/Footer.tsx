@@ -95,9 +95,11 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold tracking-wide text-yellow-300">Quick Links</h4>
             <ul className="mt-3 space-y-2 text-sm">
-              <li><Link to="/products" className="hover:text-yellow-300">Conscious Fashion</Link></li>
-              <li><Link to="/women-empowerment" className="hover:text-yellow-300">Women Empowerment Programs</Link></li>
-              <li><Link to="/mentorship-program" className="hover:text-yellow-300">Mentorship Program</Link></li>
+              <li><Link to="/catalogue" className="hover:text-yellow-300">Conscious Fashion</Link></li>
+              <li><Link to="/about" className="hover:text-yellow-300"> About Us</Link></li>
+              <li><Link to="/client" className="hover:text-yellow-300">The Journey</Link></li>
+              <li><Link to="/what-we-do" className="hover:text-yellow-300">What We Do</Link></li>
+              <li><Link to="/refund-policy" className="hover:text-yellow-300">Refund Policy</Link></li>
               <li><Link to="/contact" className="hover:text-yellow-300">Contact Us</Link></li>
             </ul>
           </div>

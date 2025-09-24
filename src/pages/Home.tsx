@@ -11,6 +11,7 @@ import pressImage from "../assets/images/6.webp";           // ✅ fixed press i
 import slideImage1 from "../assets/images/pic1.jpeg";
 import slideImage2 from "../assets/images/pic2.jpeg";
 import slideImage3 from "../assets/images/pic3.jpeg";
+import Testimonials from "../components/Testimonials";
 
 export default function Home() {
 
@@ -254,54 +255,87 @@ export default function Home() {
           </div>
         </div>
       </section>
+{/* Press / Insights */}
+<section className="py-14 relative isolate">
+  {/* subtle background accents */}
+  <div className="pointer-events-none absolute inset-0 -z-10 opacity-70 [background:
+    radial-gradient(600px_600px_at_0%_0%,rgba(250,204,21,0.08),transparent_60%),
+    radial-gradient(800px_800px_at_100%_100%,rgba(16,185,129,0.08),transparent_60%)]" />
 
-      {/* Press / Insights */}
-      <section className="py-14">
-        <div className="container">
-          <div className="flex items-end justify-between gap-4 mb-8">
-            <div>
-              <p className="text-sm font-semibold text-emerald-700">From the press</p>
-              <h2 className="text-2xl md:text-3xl font-bold text-emerald-900">Featured News & Insights</h2>
-              <div className="mt-2 h-1 w-16 bg-yellow-400 rounded" />
-            </div>
-            {/* <Link to="/news" className="text-sm font-medium text-emerald-700 hover:underline">View all</Link> */}
-          </div>
+  <div className="container">
+    {/* Header */}
+    <div className="mb-10 text-center">
+      <span className="inline-flex items-center gap-2 rounded-full bg-yellow-100 text-emerald-800 px-3 py-1 text-xs font-semibold ring-1 ring-yellow-200">
+        From the press
+      </span>
+      <h2 className="mt-3 text-3xl md:text-4xl font-bold text-emerald-900">
+        Featured News & Insights
+      </h2>
+      <div className="mt-2 h-1 w-16 bg-yellow-400 rounded mx-auto" />
+    </div>
 
-          <article className="group grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 md:gap-5 items-stretch">
-            <div>
-              <div className={`relative overflow-hidden ${card} h-36 md:h-40`}>
-                <img
-                  src={pressImage}
-                  alt="Be Afrique: Nigerian fashion designer brings heritage and eco-fashion to Britain"
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <span className="absolute top-2 left-2 bg-yellow-400 text-emerald-900 text-[10px] md:text-xs font-bold px-2 py-0.5 rounded-full">
-                  Press
-                </span>
-              </div>
-            </div>
-
-            <div className={`${card} p-4 md:p-5 flex flex-col`}>
-              <h3 className="text-lg md:text-xl font-semibold leading-snug text-emerald-900">
-                Be Afrique: Nigerian fashion designer brings heritage and eco-fashion to Britain
-              </h3>
-              <p className="mt-2 text-sm md:text-base leading-relaxed text-gray-600 line-clamp-3 md:line-clamp-none flex-1">
-                Bukonla, a Nigerian-born fashion designer and writer, has combined her tailoring roots with academic research
-                in sustainability to build a fashion brand now present in the United Kingdom.
-              </p>
-              <div className="mt-3">
-                <a
-                  href="https://www.vanguardngr.com/2025/08/be-afrique-nigerian-creative-brings-heritage-and-eco-fashion-to-britain/"
-                  target="_blank" rel="noopener noreferrer"
-                  className={`${btnSecondary} !py-1.5`}
-                >
-                  Read full article →
-                </a>
-              </div>
-            </div>
-          </article>
+    {/* Feature card */}
+    <article className="grid grid-cols-1 md:grid-cols-[minmax(260px,38%)_1fr] gap-5 items-stretch">
+      {/* Image side */}
+      <div className="relative overflow-hidden rounded-3xl ring-1 ring-gray-200 shadow-sm">
+        <img
+          src={pressImage}
+          alt="Be Afrique: Nigerian fashion designer brings heritage and eco-fashion to Britain"
+          className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
+        />
+        {/* badges */}
+        <div className="absolute top-3 left-3 flex items-center gap-2">
+          <span className="rounded-full bg-yellow-400 text-emerald-900 text-xs font-bold px-3 py-1 ring-1 ring-yellow-300 shadow">
+            Press
+          </span>
+          <span className="hidden sm:inline rounded-full bg-white/85 backdrop-blur px-3 py-1 text-xs font-semibold text-emerald-900 ring-1 ring-white/60">
+            Vanguard
+          </span>
         </div>
-      </section>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+      </div>
+
+      {/* Content side */}
+      <div className="rounded-3xl ring-1 ring-gray-200 bg-white p-6 md:p-8 shadow-sm">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+          <span className="font-semibold text-emerald-900">Vanguard</span>
+          <span aria-hidden>•</span>
+          <time dateTime="2025-08-01">Aug 2025</time>
+          <span aria-hidden>•</span>
+          <span>2 min read</span>
+        </div>
+
+        <h3 className="mt-3 text-xl md:text-2xl font-semibold leading-snug text-emerald-900">
+          Be Afrique: Nigerian fashion designer brings heritage and eco-fashion to Britain
+        </h3>
+
+        <p className="mt-3 text-[15px] md:text-base leading-relaxed text-gray-700">
+          Bukonla, a Nigerian-born fashion designer and writer, blends tailoring roots with academic
+          research in sustainability to build a conscious fashion brand now present in the UK.
+        </p>
+
+        <div className="mt-5 flex flex-wrap gap-3">
+          <a
+            href="https://www.vanguardngr.com/2025/08/be-afrique-nigerian-creative-brings-heritage-and-eco-fashion-to-britain/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-yellow-400 px-5 py-3 text-sm font-semibold text-emerald-900 hover:bg-yellow-500"
+          >
+            Read full article →
+          </a>
+          <a
+            href="/about#mission-vision"
+            className="inline-flex items-center gap-2 rounded-full border border-emerald-600 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-50"
+          >
+            Our mission & vision
+          </a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<Testimonials />
 
       {/* Contact / Consult */}
       <section className="py-14 bg-gradient-to-b from-emerald-50/60 to-gray-50">
