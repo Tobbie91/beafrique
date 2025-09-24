@@ -41,11 +41,12 @@ export default function CatalogueCards({ items, getOutsideLink }: Props) {
       target={outside ? "_blank" : undefined}
       rel={outside ? "noreferrer" : undefined}
       aria-disabled={!outside}
-      className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition text-emerald-900
-        ${outside
-          ? "bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-emerald-900/30"
-          : "bg-emerald-800/60 text-emerald-300 opacity-60 cursor-not-allowed pointer-events-none"}
-      `}
+      className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition
+  ${outside
+    ? "bg-yellow-300 hover:bg-yellow-400 text-emerald-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-200"
+    : "bg-emerald-50 text-emerald-400 ring-1 ring-emerald-200 cursor-not-allowed pointer-events-none"}
+`}
+
     >
       Buy from our UK store
     </a>
