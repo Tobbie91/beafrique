@@ -1,19 +1,18 @@
-import { Link, NavLink } from 'react-router-dom'
-import { useState } from 'react'
-import { ShoppingBag } from 'lucide-react'
-import { useCart } from '../store/cart'
-import logo from '../assets/images/logo.webp'
+import { Link, NavLink } from "react-router-dom";
+import { useState } from "react";
+import HeaderCartIcon from "./HeaderCartIcon"; // ⬅️ add this
+import { useCart } from "../store/cart";
+import logo from "../assets/images/logo.webp";
 
 export default function Header() {
-  const [open, setOpen] = useState(false)
-  const [aboutOpen, setAboutOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
 
-  // cart totals for header badge
-  const count = useCart(s => s.items.reduce((n, i) => n + i.qty, 0))
-  const total = useCart(s => s.items.reduce((sum, i) => sum + i.price * i.qty, 0))
+  // If you really want the count here too (for mobile), compute safely:
+  const count = useCart((s) => s.count()); // or reduce over s.items
 
   const link = (isActive: boolean) =>
-    `px-3 py-2 rounded-md transition hover:bg-brand/10 hover:text-brand ${isActive ? 'text-brand' : ''}`
+    `px-3 py-2 rounded-md transition hover:bg-brand/10 hover:text-brand ${isActive ? "text-brand" : ""}`;
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
@@ -74,7 +73,7 @@ export default function Header() {
                 <NavLink
                   to="/about#values"
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-lg hover:bg-brand/10 ${isActive ? 'text-brand' : 'text-gray-700'}`
+                    `block px-3 py-2 rounded-lg hover:bg-brand/10 ${isActive ? "text-brand" : "text-gray-700"}`
                   }
                 >
                   Our Values
@@ -82,7 +81,7 @@ export default function Header() {
                 <NavLink
                   to="/our-team"
                   className={({ isActive }) =>
-                    `block px-3 py-2 rounded-lg hover:bg-brand/10 ${isActive ? 'text-brand' : 'text-gray-700'}`
+                    `block px-3 py-2 rounded-lg hover:bg-brand/10 ${isActive ? "text-brand" : "text-gray-700"}`
                   }
                 >
                   Our Team
@@ -96,26 +95,13 @@ export default function Header() {
           <NavLink to="/catalogue" className={({ isActive }) => link(isActive)}>Catalogue</NavLink>
           <NavLink to="/contact" className={({ isActive }) => link(isActive)}>Contact Us</NavLink>
 
-          {/* Cart button */}
-          <Link
-            to="/checkout"
-            aria-label="View cart"
-            className="ml-2 relative inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-emerald-900 hover:bg-emerald-50"
-          >
-            <ShoppingBag className="h-5 w-5" />
-            <span className="hidden lg:inline text-sm font-medium">Cart</span>
-            <span className="ml-1 rounded-full bg-yellow-400 px-2 py-0.5 text-xs font-semibold text-emerald-900">
-              {count}
-            </span>
-            {count > 0 && (
-              <span className="hidden xl:inline text-xs text-gray-500">&nbsp;• {total.toLocaleString()}</span>
-            )}
-          </Link>
+          {/* Drop-in cart icon */}
+          <HeaderCartIcon />
         </div>
 
         {/* Mobile toggle */}
         <button
-          onClick={() => setOpen(v => !v)}
+          onClick={() => setOpen((v) => !v)}
           className="md:hidden w-10 h-10 grid place-content-center rounded-lg hover:bg-brand/10"
           aria-label="Open menu"
         >
@@ -158,15 +144,18 @@ export default function Header() {
 
             {/* Mobile cart link with count */}
             <Link
-              to="/checkout"
+              to="/cart"  // ⬅️ point to your Cart page, not /checkout
               onClick={() => setOpen(false)}
               className="mt-2 px-3 py-2 rounded-md transition hover:bg-brand/10"
             >
-              Cart <span className="ml-1 text-xs bg-yellow-400 text-emerald-900 px-2 py-0.5 rounded-full">{count}</span>
+              Cart{" "}
+              <span className="ml-1 text-xs bg-yellow-400 text-emerald-900 px-2 py-0.5 rounded-full">
+                {count}
+              </span>
             </Link>
           </div>
         </div>
       )}
     </header>
-  )
+  );
 }

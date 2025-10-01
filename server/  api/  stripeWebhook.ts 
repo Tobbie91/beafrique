@@ -1,0 +1,46 @@
+import { buffer } from "micro";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import Stripe from "stripe";
+import { db } from "../lib/firebase.js";
+
+export const config = { api: { bodyParser: false } };
+
+const stripe = new Stripe(process.env.STRIPE_SECRET as string, { apiVersion: "2024-06-20" });
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method !== "POST") return res.status(405).send("Method not allowed");
+  try {
+    const sig = req.headers["stripe-signature"] as string;
+    const raw = await buffer(req);
+    const whsec = process.env.STRIPE_WEBHOOK as string;
+
+    const event = stripe.webhooks.constructEvent(raw, sig, whsec);
+
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object as Stripe.Checkout.Session;
+      const full = await stripe.checkout.sessions.retrieve(session.id, {
+        expand: ["line_items.data.price.product"]
+      });
+
+      await db.collection("orders").doc(session.id).set({
+        stripe_session_id: session.id,
+        amount_total: session.amount_total,
+        currency: session.currency,
+        payment_status: session.payment_status,
+        customer_email: session.customer_details?.email || null,
+        created_at: new Date(),
+        line_items: (full.line_items?.data || []).map(li => ({
+          description: li.description,
+          qty: li.quantity,
+          amount_total: li.amount_total,
+          metadata: (li.price?.product as any)?.metadata || {}
+        }))
+      });
+    }
+
+    res.status(200).json({ received: true });
+  } catch (err: any) {
+    console.error("Webhook error:", err?.message);
+    res.status(400).send(`Webhook Error: ${err?.message}`);
+  }
+}

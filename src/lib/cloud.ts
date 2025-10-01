@@ -1,45 +1,28 @@
-import { CLOUDINARY } from "../config";
 
-/** Optional: create nice thumbnails via Cloudinary transformations */
-export const withTx = (url: string, tx: string) =>
-  url.includes("/upload/")
-    ? url.replace("/upload/", `/upload/${tx}/`)
-    : url;
 
-/** Unsigned upload (no backend) */
-export function uploadToCloudinary(
-  file: File,
-  opts?: { folder?: string }
-): Promise<{
-  secure_url: string;
-  public_id: string;
-  width: number;
-  height: number;
-  original_filename: string;
-}> {
-  return new Promise((resolve, reject) => {
-    const form = new FormData();
-    form.append("file", file);
-    form.append("upload_preset", CLOUDINARY.uploadPreset);
-    if (opts?.folder || CLOUDINARY.folder) {
-      form.append("folder", opts?.folder ?? CLOUDINARY.folder);
-    }
+// lib/cloud.ts
+const CLOUD = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME!;
+const PRESET = import.meta.env.VITE_CLOUDINARY_UNSIGNED_PRESET!;
+const FOLDER = import.meta.env.VITE_CLOUDINARY_FOLDER || "beafrique";
 
-    const xhr = new XMLHttpRequest();
-    xhr.open(
-      "POST",
-      `https://api.cloudinary.com/v1_1/${CLOUDINARY.cloudName}/image/upload`
-    );
+export type CloudUpload = { url: string; publicId: string };
 
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        resolve(JSON.parse(xhr.responseText));
-      } else {
-        reject(new Error(`Cloudinary upload failed (${xhr.status})`));
-      }
-    };
-    xhr.onerror = () => reject(new Error("Network error"));
+export async function uploadToCloudinary(file: File | string, publicId?: string): Promise<CloudUpload> {
+  if (!CLOUD || !PRESET) throw new Error("Cloudinary env not set (cloud or preset).");
+  const url = `https://api.cloudinary.com/v1_1/${CLOUD}/upload`;
 
-    xhr.send(form);
-  });
+  const form = new FormData();
+  form.append("upload_preset", PRESET);
+  form.append("folder", FOLDER);
+  if (publicId) form.append("public_id", publicId);
+  form.append("file", file);
+
+  const res = await fetch(url, { method: "POST", body: form });
+  const text = await res.text();
+  if (!res.ok) {
+    try { throw new Error(JSON.parse(text)?.error?.message || `Cloudinary ${res.status}`); }
+    catch { throw new Error(`Cloudinary ${res.status}: ${text}`); }
+  }
+  const json = JSON.parse(text);
+  return { url: json.secure_url as string, publicId: json.public_id as string };
 }
