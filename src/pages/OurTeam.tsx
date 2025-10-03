@@ -2,6 +2,7 @@ import { Linkedin, Instagram, Mail } from "lucide-react";
 import bukonlaImg from "../assets/images/pic5.jpeg";
 import amakaImg   from "../assets/images/pic6.jpeg";
 import tariImg    from "../assets/images/pic7.jpeg";
+import osho    from "../assets/images/Oshopic.jpeg";
 
 type Member = {
   name: string;
@@ -13,15 +14,22 @@ type Member = {
 
 const TEAM: Member[] = [
   {
-    name: "Bukonla",
-    role: "Founder & Creative Director",
+    name: "Osho Ademola Joel",
+    role: "Strategic Advisor & Team Lead",
+    photo: osho,
+    bio: "Executive coach and strategic advisor to the brand.",
+    socials: {  email: "oshoademola1@gmail.com" },
+  },
+  {
+    name: "Seun",
+    role: "Production Team leader",
     photo: bukonlaImg, // ← local asset
     bio: "Sustainable design, heritage-led storytelling, women empowerment.",
     socials: { linkedin: "#", instagram: "#", email: "hello@beafrique.com" },
   },
   {
     name: "Amaka",
-    role: "Production Lead",
+    role: "Social media manager",
     photo: amakaImg, // ← local asset
     bio: "Pattern cutting, low-waste techniques, quality assurance.",
     socials: { linkedin: "#", instagram: "#" },
@@ -58,7 +66,7 @@ export default function OurTeam() {
       {/* Grid */}
       <section className="py-14">
         <div className="container">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {TEAM.map((m) => (
               <article
                 key={m.name}

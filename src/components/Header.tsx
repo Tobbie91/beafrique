@@ -3,6 +3,7 @@ import { useState } from "react";
 import HeaderCartIcon from "./HeaderCartIcon"; // ⬅️ add this
 import { useCart } from "../store/cart";
 import logo from "../assets/images/logo.webp";
+import AnnouncementBar from "./AnnouncementBar";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -16,6 +17,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b">
+            <AnnouncementBar />  
       {/* Top strip */}
       <div className="bg-emerald-900 text-white">
         <div className="container h-20 flex flex-col md:flex-row items-center justify-between text-sm space-y-4 md:space-y-0 md:h-16">

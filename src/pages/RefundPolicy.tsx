@@ -26,7 +26,7 @@ export default function RefundPolicy() {
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           <div className="md:col-span-2 rounded-2xl bg-white ring-1 ring-gray-200 p-6 shadow-sm">
             {/* Returns window */}
-            <h2 className="text-lg font-semibold text-emerald-900">What is your returns policy?</h2>
+            <h2 className="text-lg font-semibold text-emerald-900">What is our returns policy?</h2>
             <p className="mt-2 text-[15px] leading-7 text-gray-700">
               You may return your order within <span className="font-semibold">5 days</span> of receiving it for a refund,
               exchange, or store credit (subject to the conditions below).
