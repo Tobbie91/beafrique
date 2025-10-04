@@ -13,6 +13,7 @@ import slideImage2 from "../assets/images/pic2.jpeg";
 import slideImage3 from "../assets/images/pic3.jpeg";
 import Testimonials from "../components/Testimonials";
 
+
 export default function Home() {
 
   type Slide = {
@@ -84,8 +85,8 @@ export default function Home() {
                 <Link to={current.cta.href} className={btnPrimary}>
                   {current.cta.label}
                 </Link>
-                <Link to="/about" className={btnSecondary}>
-                  About Us
+                <Link to="/catalogue" className={btnSecondary}>
+                  Our Catalogue
                 </Link>
               </div>
 
@@ -186,7 +187,8 @@ export default function Home() {
       <FocusCarousel />
 
       {/* Catalogue */}
-      <section className="py-14">
+      {/* <HomeCatalogueTeaser/> */}
+      {/* <section className="py-14">
         <div className="container">
           <div className="text-center">
             <p className="text-emerald-700 text-sm font-semibold tracking-wide">Designed by women for women</p>
@@ -207,7 +209,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* About */}
       <section className="py-14">

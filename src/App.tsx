@@ -1,23 +1,23 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import Layout from './components/Layout'
-import Home from './pages/Home'
-import Products from './pages/Products'
-import ProductDetail from './pages/ProductDetail'
-import About from './pages/About'
-import FAQ from './pages/FAQ'
-import Contact from './pages/Contact'
-import Checkout from './pages/Checkout'
-import WhatWeDo from './pages/WhatWeDo'
-import Catalogue from './pages/Catalogue'
-import Client from './pages/Client'
-import OurTeam from './pages/OurTeam'
-import AdminNewProduct from './pages/AdminNewProduct'
-import RefundPolicy from './pages/RefundPolicy'
-import ProductsTest from './pages/Products'
-import AdminGuard from './components/AdminGuard'
-import AdminDashboard from './pages/AdminDashboard'
-import AdminSignIn from './pages/AdminSignIn'
-import CartPage from './pages/Cart'
+import { Routes, Route, Navigate } from "react-router-dom";
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
+import About from "./pages/About";
+import FAQ from "./pages/FAQ";
+import Contact from "./pages/Contact";
+import Checkout from "./pages/Checkout";
+import WhatWeDo from "./pages/WhatWeDo";
+import Catalogue from "./pages/Catalogue";
+import Client from "./pages/Client";
+import OurTeam from "./pages/OurTeam";
+import AdminNewProduct from "./pages/AdminNewProduct";
+import RefundPolicy from "./pages/RefundPolicy";
+import ProductsTest from "./pages/Products";
+import AdminGuard from "./components/AdminGuard";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminSignIn from "./pages/AdminSignIn";
+import CartPage from "./pages/Cart";
 
 export default function App() {
   return (
@@ -34,7 +34,7 @@ export default function App() {
         <Route path="/client" element={<Client />} />
         <Route path="/refund-policy" element={<RefundPolicy />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/cart" element={<CartPage  />} />
+        <Route path="/cart" element={<CartPage />} />
         {/* admin sign-in (public) */}
         <Route path="/admin/sign-in" element={<AdminSignIn />} />
 

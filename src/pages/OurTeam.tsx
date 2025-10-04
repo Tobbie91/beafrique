@@ -1,5 +1,5 @@
 import { Linkedin, Instagram, Mail } from "lucide-react";
-import bukonlaImg from "../assets/images/pic5.jpeg";
+import bukonlaImg from "../assets/images/6.webp";
 import amakaImg   from "../assets/images/pic6.jpeg";
 import tariImg    from "../assets/images/pic7.jpeg";
 import osho    from "../assets/images/Oshopic.jpeg";
@@ -30,14 +30,16 @@ const TEAM: Member[] = [
   {
     name: "Adeola Ayorimde",
     role: "production manager",
-    photo: amakaImg, // ← local asset
+    photo: tariImg,
+// ← local asset
     // bio: "Pattern cutting, low-waste techniques, quality assurance.",
     // socials: { linkedin: "#", instagram: "#" },
   },
   {
     name: "Amaka Patrick",
     role: "social media manager",
-    photo: tariImg, // ← local asset
+    photo: amakaImg, 
+  // ← local asset
     // bio: "Campaign styling, lookbooks, partnerships & press.",
     // socials: { instagram: "#", email: "press@beafrique.com" },
   },
