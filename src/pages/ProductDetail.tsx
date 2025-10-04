@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { db } from "../lib/firebase";
 import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useCart } from "../store/cart";
 import { startCheckout } from "../lib/checkout";
 
@@ -70,12 +70,12 @@ export default function ProductDetail() {
       color,
       title: product?.title,
       image: (hero || product?.primary_image_url || product?.image_urls?.[0]),
-      currency: product?.currency || "GBP",
+      // currency: product?.currency || "GBP",
     });
   }
   
   function handleBuyNow() {
-    startCheckout({ items: [{ slug, qty: 1, size, color }] });
+    // startCheckout({ items: [{ slug, qty: 1, size, color }] });
   }
 
   // load product + variants
@@ -246,9 +246,9 @@ export default function ProductDetail() {
         <div className="mt-8 flex gap-3">
           {/* <button className="px-4 py-2 rounded bg-emerald-600 text-white">Add to cart</button>
           <button className="px-4 py-2 rounded border">Wishlist</button> */}
-            <button onClick={handleBuyNow} className="px-4 py-2 rounded bg-emerald-600 text-white">
+               <Link to="/checkout" onClick={handleAddToCart}  className="px-4 py-2 rounded bg-emerald-600 text-white">
     Buy now
-  </button>
+    </Link>
   <button onClick={handleAddToCart} className="px-4 py-2 rounded border">
     Add to cart
   </button>

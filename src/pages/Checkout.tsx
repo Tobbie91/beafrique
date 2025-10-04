@@ -1,3 +1,4 @@
+// src/pages/Checkout.tsx
 import { useCart } from "../store/cart";
 import { BRAND, BANK } from "../config";
 import { Link } from "react-router-dom";
@@ -5,12 +6,16 @@ import { useMemo, useState } from "react";
 import { startCheckout } from "../lib/checkout";
 
 export default function Checkout() {
-  const { items, updateQty, remove, clear } = useCart();
+  // Use the same API as Cart page: items, setQty, remove, clear
+  const { items, setQty, remove, clear } = useCart();
+
   const CURRENCY = BRAND?.currencySymbol ?? "₦";
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
 
+  const total = items.reduce((s, i) => s + (i.price || 0) * i.qty, 0);
+
+  // Simple order id
   const orderId = useMemo(() => {
     const t = new Date();
     const pad = (n: number) => String(n).padStart(2, "0");
@@ -19,6 +24,7 @@ export default function Checkout() {
     )}${pad(t.getMinutes())}`;
   }, []);
 
+  // Shipping form
   const [ship, setShip] = useState({
     name: "",
     phone: "",
@@ -57,8 +63,8 @@ Items:
 ${items
   .map(
     (i) =>
-      `• ${i.name}${i.size ? ` (UK ${i.size})` : ""} ×${i.qty} = ${CURRENCY}${(
-        i.price * i.qty
+      `• ${i.name ?? i.slug}${i.size ? ` (UK ${i.size})` : ""} ×${i.qty} = ${CURRENCY}${(
+        (i.price || 0) * i.qty
       ).toLocaleString()}`
   )
   .join("\n")}
@@ -75,28 +81,30 @@ Payment method: Bank Transfer
 I'll send proof shortly.`;
 
   // Simple validation before Stripe
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ship.email.trim());
   const validForPayment =
-    ship.name.trim() &&
-    ship.email.trim() &&
+    ship.name.trim().length > 1 &&
+    validEmail &&
     agree &&
     items.every((i) => !!i.slug && i.qty > 0);
 
   const payWithCard = async () => {
     setErr(null);
     if (!validForPayment) {
-      setErr("Please fill name & email and accept the terms.");
+      setErr("Please fill name & a valid email, and accept the terms.");
       return;
     }
     try {
       setBusy(true);
       await startCheckout({
         items: items.map((i) => ({
-          slug: i.slug, // IMPORTANT: must match server price map/DB
+          slug: i.slug,                   // must match server price map / DB
           qty: i.qty,
           size: i.size ?? undefined,
           color: i.color ?? undefined,
         })),
         orderId,
+        email: ship.email,                // ✅ pass shopper email to Stripe
       });
     } catch (e: any) {
       setErr(e?.message || "Could not start checkout");
@@ -112,27 +120,48 @@ I'll send proof shortly.`;
         {/* Items */}
         <div className="mt-6 space-y-4">
           {items.map((i) => (
-            <div key={i.id} className="p-4 rounded-xl border flex items-center justify-between gap-4">
+            <div
+              key={`${i.slug}-${i.size ?? ""}-${i.color ?? ""}`}
+              className="p-4 rounded-xl border flex items-center justify-between gap-4"
+            >
               <div className="flex items-center gap-4">
-                {i.image && <img src={i.image} alt={i.name} className="h-16 w-16 rounded-lg object-cover border" />}
+                {i.image && (
+                  <img
+                    src={i.image}
+                    alt={i.name || i.slug}
+                    className="h-16 w-16 rounded-lg object-cover border"
+                  />
+                )}
                 <div>
-                  <p className="font-medium">{i.name}</p>
+                  <p className="font-medium">{i.name || i.slug}</p>
                   <p className="text-sm text-gray-600">
                     {i.size ? `UK ${i.size} • ` : ""}
                     {CURRENCY}
-                    {i.price.toLocaleString()}
+                    {(i.price || 0).toLocaleString()}
                   </p>
                 </div>
               </div>
+
+              {/* ✅ Use the same store API as Cart: setQty(slug, size, color, qty) */}
               <div className="flex items-center gap-3">
                 <input
                   type="number"
                   min={1}
                   value={i.qty}
-                  onChange={(e) => updateQty(i.id, Math.max(1, Number(e.target.value)))}
+                  onChange={(e) =>
+                    setQty(
+                      i.slug,
+                      i.size ?? null,
+                      i.color ?? null,
+                      Math.max(1, Number(e.target.value || 1))
+                    )
+                  }
                   className="w-20 border rounded-lg px-3 py-2"
                 />
-                <button onClick={() => remove(i.id)} className="text-red-600 hover:underline">
+                <button
+                  onClick={() => remove(i.slug, i.size ?? null, i.color ?? null)}
+                  className="text-red-600 hover:underline"
+                >
                   Remove
                 </button>
               </div>
@@ -183,7 +212,11 @@ I'll send proof shortly.`;
           </div>
 
           <label className="flex items-start gap-2 mt-3 text-sm">
-            <input type="checkbox" checked={!!agree} onChange={(e) => setAgree(e.target.checked)} />
+            <input
+              type="checkbox"
+              checked={agree}
+              onChange={(e) => setAgree(e.target.checked)}
+            />
             <span>
               I agree to the <Link to="/terms" className="underline">Terms</Link> &{" "}
               <Link to="/returns" className="underline">Returns Policy</Link>.
@@ -218,12 +251,14 @@ I'll send proof shortly.`;
         <button
           onClick={payWithCard}
           disabled={busy}
-          className={`mt-6 w-full rounded-lg px-5 py-3 text-white ${busy ? "bg-emerald-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-700"}`}
+          className={`mt-6 w-full rounded-lg px-5 py-3 text-white ${
+            busy ? "bg-emerald-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-700"
+          }`}
         >
           {busy ? "Redirecting…" : "Pay with Card (Secure)"}
         </button>
 
-        {/* Bank Transfer (keep as alt) */}
+        {/* Bank Transfer (alt) */}
         <div className="mt-6">
           <p className="font-semibold">Or pay by Bank Transfer</p>
           <div className="mt-2 p-4 rounded-lg bg-gray-50 border text-sm space-y-1">

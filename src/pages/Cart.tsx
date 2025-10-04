@@ -1,6 +1,7 @@
 // src/pages/Cart.tsx
 import { useCart } from "../store/cart";
 import { startCheckout } from "../lib/checkout";
+import { Link } from "react-router-dom";
 
 export default function CartPage() {
   const { items, setQty, remove, clear } = useCart();
@@ -55,9 +56,12 @@ export default function CartPage() {
           </ul>
 
           <div className="mt-6 flex gap-3">
-            <button onClick={checkout} className="px-5 py-3 rounded bg-emerald-600 text-white">
+            {/* <button onClick={checkout} className="px-5 py-3 rounded bg-emerald-600 text-white">
               Checkout
-            </button>
+            </button> */}
+             <Link to="/checkout" className="px-5 py-3 rounded bg-emerald-600 text-white">
+              Checkout
+            </Link>
             <button onClick={clear} className="px-5 py-3 rounded border">
               Clear cart
             </button>

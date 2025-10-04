@@ -1,33 +1,47 @@
-// src/lib/checkout.ts
+/// src/lib/checkout.ts
+
+// TEMP: hardcode prod while testing to avoid env mixups
+const base = "https://beafrique-server.vercel.app";
+
 export async function startCheckout(payload: {
   items: { slug: string; qty: number; size?: string; color?: string }[];
   orderId?: string;
+  email?: string; // ✅ add this
 }) {
-  const base = import.meta.env.VITE_API_BASE;
-  if (!base) throw new Error("VITE_API_BASE is not set");
+  // Basic validation
+  const problems: string[] = [];
+  if (!payload.items?.length) problems.push("Cart is empty.");
+  payload.items.forEach((it, idx) => {
+    if (!it.slug) problems.push(`Item ${idx + 1} is missing slug.`);
+    if (!it.qty || it.qty < 1) problems.push(`Item ${idx + 1} has invalid qty.`);
+  });
+  if (problems.length) throw new Error(problems.join(" "));
 
-  // Only include returnUrl during local dev so success redirects to your app.
-  const maybeReturnUrl =
-    import.meta.env.DEV
-      ? (import.meta.env.VITE_SITE_URL as string) || "http://localhost:5173"
-      : undefined;
+  // Build request
+  const body = {
+    ...payload,
+    // ensure email is a string or omit it
+    ...(payload.email ? { email: String(payload.email).trim() } : {}),
+    // force local returnUrl during dev so redirect comes back to your app
+    returnUrl: "http://localhost:5173",
+  };
 
   const res = await fetch(`${base}/api/createCheckoutSession`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...payload, ...(maybeReturnUrl ? { returnUrl: maybeReturnUrl } : {}) }),
+    body: JSON.stringify(body),
   });
 
+  const text = await res.text();
   if (!res.ok) {
-    let msg = await res.text().catch(() => "");
-    if (!msg) msg = `Status ${res.status}`;
-    throw new Error(`Could not start checkout. ${msg}`);
+    try {
+      const j = JSON.parse(text);
+      throw new Error(j?.error || text || `HTTP ${res.status}`);
+    } catch {
+      throw new Error(text || `HTTP ${res.status}`);
+    }
   }
-
-  const data = await res.json();
-  if (!data?.url) throw new Error("Server did not return a checkout URL");
-  window.location.href = data.url;
+  const { url } = JSON.parse(text);
+  if (!url) throw new Error("Server did not return a checkout URL");
+  window.location.href = url;
 }
-
-
-  

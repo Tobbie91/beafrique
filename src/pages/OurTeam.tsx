@@ -17,29 +17,29 @@ const TEAM: Member[] = [
     name: "Osho Ademola Joel",
     role: "Strategic Advisor & Team Lead",
     photo: osho,
-    bio: "Executive coach and strategic advisor to the brand.",
-    socials: {  email: "oshoademola1@gmail.com" },
+    // bio: "Executive coach and strategic advisor to the brand.",
+    // socials: {  email: "oshoademola1@gmail.com" },
   },
   {
-    name: "Seun",
-    role: "Production Team leader",
+    name: "Bukonla Sowale",
+    role: "creative director",
     photo: bukonlaImg, // ← local asset
-    bio: "Sustainable design, heritage-led storytelling, women empowerment.",
-    socials: { linkedin: "#", instagram: "#", email: "hello@beafrique.com" },
+    // bio: "Sustainable design, heritage-led storytelling, women empowerment.",
+    // socials: { linkedin: "#", instagram: "#", email: "hello@beafrique.com" },
   },
   {
-    name: "Amaka",
-    role: "Social media manager",
+    name: "Adeola Ayorimde",
+    role: "production manager",
     photo: amakaImg, // ← local asset
-    bio: "Pattern cutting, low-waste techniques, quality assurance.",
-    socials: { linkedin: "#", instagram: "#" },
+    // bio: "Pattern cutting, low-waste techniques, quality assurance.",
+    // socials: { linkedin: "#", instagram: "#" },
   },
   {
-    name: "Tari",
-    role: "Brand & Styling",
+    name: "Amaka Patrick",
+    role: "social media manager",
     photo: tariImg, // ← local asset
-    bio: "Campaign styling, lookbooks, partnerships & press.",
-    socials: { instagram: "#", email: "press@beafrique.com" },
+    // bio: "Campaign styling, lookbooks, partnerships & press.",
+    // socials: { instagram: "#", email: "press@beafrique.com" },
   },
 ];
 export default function OurTeam() {
