@@ -18,6 +18,8 @@ import AdminGuard from "./components/AdminGuard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminSignIn from "./pages/AdminSignIn";
 import CartPage from "./pages/Cart";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
+import CheckoutCancel from "./pages/CheckoutCancel";
 
 export default function App() {
   return (
@@ -64,6 +66,10 @@ export default function App() {
 
         {/* catch-all LAST */}
         <Route path="*" element={<Navigate to="/" replace />} />
+        // e.g. in App.tsx
+<Route path="/checkout/success" element={<CheckoutSuccess />} />
+<Route path="/checkout/cancel" element={<CheckoutCancel />} />
+
       </Routes>
     </Layout>
   );
