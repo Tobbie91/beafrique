@@ -33,6 +33,8 @@ if (missing.length) {
   }
 }
 
+
+
 // ---- Initialize once (singleton) ----
 export const app = getApps().length ? getApp() : initializeApp(cfg as any);
 export const db = getFirestore(app);
