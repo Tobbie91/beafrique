@@ -70,7 +70,7 @@ module.exports = async (req, res) => {
 
     const orderId = body.orderId || `ord_${Date.now()}`;
     const returnUrl =
-      body.returnUrl || process.env.APP_URL || "https://example.com";
+      body.returnUrl || process.env.APP_URL || "https://beafrique.netlify.app";
 
       const session = await stripe.checkout.sessions.create({
         mode: "payment",

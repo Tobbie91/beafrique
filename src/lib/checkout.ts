@@ -1,32 +1,45 @@
-/// src/lib/checkout.ts
+// src/lib/checkout.ts
 
-// TEMP: hardcode prod while testing to avoid env mixups
-const base = "https://beafrique-server.vercel.app";
+// Your API server (Vercel)
+const API_BASE =
+  import.meta.env.VITE_API_BASE ?? "https://beafrique-server.vercel.app";
+
+// Figure out where *this* app is running (local vs Netlify)
+const APP_ORIGIN =
+  typeof window !== "undefined"
+    ? (import.meta.env.PROD
+        ? "https://beafrique.netlify.app" // ← your Netlify domain
+        : window.location.origin)         // dev: http://localhost:5173
+    : "https://beafrique.netlify.app";
 
 export async function startCheckout(payload: {
   items: { slug: string; qty: number; size?: string; color?: string }[];
   orderId?: string;
-  email?: string; // ✅ add this
+  email?: string;
 }) {
-  // Basic validation
   const problems: string[] = [];
   if (!payload.items?.length) problems.push("Cart is empty.");
-  payload.items.forEach((it, idx) => {
-    if (!it.slug) problems.push(`Item ${idx + 1} is missing slug.`);
-    if (!it.qty || it.qty < 1) problems.push(`Item ${idx + 1} has invalid qty.`);
+  payload.items.forEach((it, i) => {
+    if (!it.slug) problems.push(`Item ${i + 1} is missing slug.`);
+    if (!it.qty || it.qty < 1) problems.push(`Item ${i + 1} has invalid qty.`);
   });
   if (problems.length) throw new Error(problems.join(" "));
 
-  // Build request
+  // If your server expects success/cancel, send both:
+  const successUrl = `${APP_ORIGIN}/checkout/success`;
+  const cancelUrl  = `${APP_ORIGIN}/cart`;
+
   const body = {
     ...payload,
-    // ensure email is a string or omit it
     ...(payload.email ? { email: String(payload.email).trim() } : {}),
-    // force local returnUrl during dev so redirect comes back to your app
-    returnUrl: "http://localhost:5173",
+    // if your API expects a single returnUrl instead, keep this:
+    returnUrl: APP_ORIGIN,
+    // or if it expects success/cancel explicitly, pass these too:
+    successUrl,
+    cancelUrl,
   };
 
-  const res = await fetch(`${base}/api/createCheckoutSession`, {
+  const res = await fetch(`${API_BASE}/api/createCheckoutSession`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -41,6 +54,7 @@ export async function startCheckout(payload: {
       throw new Error(text || `HTTP ${res.status}`);
     }
   }
+
   const { url } = JSON.parse(text);
   if (!url) throw new Error("Server did not return a checkout URL");
   window.location.href = url;
