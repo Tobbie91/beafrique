@@ -97,14 +97,16 @@ I'll send proof shortly.`;
     try {
       setBusy(true);
       await startCheckout({
-        items: items.map((i) => ({
-          slug: i.slug,                   // must match server price map / DB
+        items: items.map(i => ({
+          slug: i.slug,
           qty: i.qty,
           size: i.size ?? undefined,
           color: i.color ?? undefined,
+          amount: Math.round(Number(i.price || 0) * 100), // £ -> pence
+          currency: "gbp", // or derive from your product (e.g. (product?.currency || "gbp").toLowerCase())
         })),
         orderId,
-        email: ship.email,                // ✅ pass shopper email to Stripe
+        email: ship.email,
       });
     } catch (e: any) {
       setErr(e?.message || "Could not start checkout");
