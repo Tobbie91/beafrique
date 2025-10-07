@@ -1,48 +1,22 @@
 // src/lib/checkout.ts
-const base = "https://beafrique-server.vercel.app";
-
+// const base = import.meta.env.VITE_API_BASE;
+// const returnUrl = import.meta.env.VITE_SITE_URL; // <- single source of truth
+const base = import.meta.env.VITE_API_BASE;  // <- Netlify var
+const returnUrl = window.location.origin;  
 export async function startCheckout(payload: {
   items: { slug: string; qty: number; size?: string; color?: string }[];
   orderId?: string;
   email?: string;
 }) {
-  const problems: string[] = [];
-  if (!payload.items?.length) problems.push("Cart is empty.");
-  payload.items.forEach((it, idx) => {
-    if (!it.slug) problems.push(`Item ${idx + 1} is missing slug.`);
-    if (!it.qty || it.qty < 1) problems.push(`Item ${idx + 1} has invalid qty.`);
-  });
-  if (problems.length) throw new Error(problems.join(" "));
-
-  // 👇 use your site origin so success/cancel redirect back correctly on Netlify
-  const returnUrl =
-    typeof window !== "undefined"
-      ? window.location.origin // e.g. https://beafrique.netlify.app
-      : (import.meta as any).env?.VITE_APP_URL || "https://beafrique.netlify.app";
-
-  const body = {
-    ...payload,
-    ...(payload.email ? { email: String(payload.email).trim() } : {}),
-    returnUrl, // 👈 pass to server
-  };
+  if (!payload.items?.length) throw new Error("Cart is empty.");
 
   const res = await fetch(`${base}/api/createCheckoutSession`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ ...payload, returnUrl }),
   });
 
-  const text = await res.text();
-  if (!res.ok) {
-    try {
-      const j = JSON.parse(text);
-      throw new Error(j?.error || text || `HTTP ${res.status}`);
-    } catch {
-      throw new Error(text || `HTTP ${res.status}`);
-    }
-  }
-
-  const { url } = JSON.parse(text);
-  if (!url) throw new Error("Server did not return a checkout URL");
+  const { url } = await res.json();
+  if (!url) throw new Error("No checkout URL returned");
   window.location.href = url;
 }

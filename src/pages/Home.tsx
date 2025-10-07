@@ -7,7 +7,7 @@ import FocusCarousel from "../components/FocusCarousel";
 import CatalogueCards from "../components/CatalogueCards";
 
 import AboutUsImage from "../assets/images/buk4.webp";
-import pressImage from "../assets/images/6.webp";           // ✅ fixed press image import
+import pressImage from "../assets/images/6.webp";         
 import slideImage1 from "../assets/images/pic1.jpeg";
 import slideImage2 from "../assets/images/pic2.jpeg";
 import slideImage3 from "../assets/images/pic3.jpeg";

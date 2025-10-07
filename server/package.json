@@ -1,6 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "private": true,
   "main": "index.js",
   "directories": {
     "lib": "lib"
@@ -8,11 +9,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
+    "@supabase/supabase-js": "^2.74.0",
     "stripe": "^12.18.0"
   }
 }
