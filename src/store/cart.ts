@@ -21,14 +21,25 @@ export const useCart = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
-      add: (item) => set(state => {
-        // merge by (slug,size,color)
+      add: (item) =>
+      set((state) => {
         const k = keyOf(item);
-        const idx = state.items.findIndex(i => keyOf(i) === k);
+        const idx = state.items.findIndex((i) => keyOf(i) === k);
+    
         if (idx >= 0) {
           const next = [...state.items];
-          // @ts-ignore
-          next[idx] = { ...next[idx], qty: next[idx].qty + (item.qty || 1) };
+          const existing = next[idx];
+    
+          // merge: bump qty; keep existing values unless new provided
+          next[idx] = {
+            ...existing,
+            qty: (existing?.qty || 0) + (item.qty || 1),
+            // if a new price is provided, update it; otherwise keep old
+            price: item.price ?? existing?.price,
+            currency: item.currency ?? existing?.currency,
+            title: item.title ?? existing?.title,
+            image: item.image ?? existing?.image,
+          };
           return { items: next };
         }
         return { items: [...state.items, { ...item, qty: item.qty || 1 }] };

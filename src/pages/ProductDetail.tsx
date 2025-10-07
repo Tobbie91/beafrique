@@ -62,6 +62,15 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const add = useCart(s => s.add);
 
+
+  const activeVariant = useMemo(
+    () => variants.find(v => (v.color_id ?? "") === (color ?? "") && v.size === size),
+    [variants, color, size]
+  );
+
+  const unitPrice =
+  ((activeVariant?.price_cents ?? product?.min_price_cents ?? 0) / 100);
+
   function handleAddToCart() {
     add({
       slug,
@@ -70,7 +79,8 @@ export default function ProductDetail() {
       color,
       title: product?.title,
       image: (hero || product?.primary_image_url || product?.image_urls?.[0]),
-      // currency: product?.currency || "GBP",
+      price: unitPrice,                           // <-- IMPORTANT
+      currency: (product?.currency || "GBP").toLowerCase(),
     });
   }
   
@@ -133,10 +143,6 @@ export default function ProductDetail() {
     return Array.from(new Map(all.map(u => [u, true])).keys());
   }, [variants, color, size, hero, product?.image_urls]);
 
-  const activeVariant = useMemo(
-    () => variants.find(v => (v.color_id ?? "") === (color ?? "") && v.size === size),
-    [variants, color, size]
-  );
 
   // GBP by default
   const price = new Intl.NumberFormat("en-GB", {

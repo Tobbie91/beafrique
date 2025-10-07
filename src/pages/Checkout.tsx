@@ -96,18 +96,20 @@ I'll send proof shortly.`;
     }
     try {
       setBusy(true);
-      await startCheckout({
+      const payload = {
         items: items.map(i => ({
           slug: i.slug,
           qty: i.qty,
           size: i.size ?? undefined,
           color: i.color ?? undefined,
-          amount: Math.round(Number(i.price || 0) * 100), // £ -> pence
-          currency: "gbp", // or derive from your product (e.g. (product?.currency || "gbp").toLowerCase())
+          amount: Math.round(Number(i.price || 0) * 100),
+          currency: "gbp",
         })),
         orderId,
         email: ship.email,
-      });
+      };
+      console.log("[checkout] payload", payload);
+      await startCheckout(payload);
     } catch (e: any) {
       setErr(e?.message || "Could not start checkout");
       setBusy(false);
@@ -137,10 +139,10 @@ I'll send proof shortly.`;
                 <div>
                   <p className="font-medium">{i.name || i.slug}</p>
                   <p className="text-sm text-gray-600">
-                    {i.size ? `UK ${i.size} • ` : ""}
-                    {CURRENCY}
-                    {(i.price || 0).toLocaleString()}
-                  </p>
+  {i.size ? `UK ${i.size} • ` : ""}
+  {CURRENCY}{(i.price || 0).toLocaleString()}
+</p>
+
                 </div>
               </div>
 

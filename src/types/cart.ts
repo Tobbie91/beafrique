@@ -1,13 +1,11 @@
 export type CartItem = {
-  slug: string;            // product id (authoritative key)
+  slug: string;
   qty: number;
   size?: string | null;
   color?: string | null;
-
-  // Optional UI helpers (non-authoritative, purely for display)
-  name?: string;
   title?: string;
   image?: string;
-  price?: number;          // display-only; real price comes from server
-  id?: string;             // if you used it as a React key anywhere
+  name?: string;
+  price: number;           // <-- add this (major units, e.g. 79 for £79? No → use 79.00)
+  currency?: string;       // <-- optional, e.g. "gbp"
 };
