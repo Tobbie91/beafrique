@@ -21,23 +21,27 @@ export const BRAND: BrandConfig = {
 };
 
 export type BankConfig = {
+  country: "GB" | "NG" | "US" | "EU" | string;
   bankName: string;
   accountName: string;
   accountNumber: string;
+  sortCode?: string;   // ✅ UK needs this
+  iban?: string;       // optional (international)
+  bic?: string;        // optional (international)
   note?: string;
-  sortCode?: string;  // ← optional (UK)
-  iban?: string;      // ← optional (international)
-  bic?: string;       // ← optional (aka SWIFT)
 };
 
+
+
 export const BANK: BankConfig = {
-  bankName: "Monzo Bank",
-  accountName: "Be Afrique Limited",
+  country: "GB",
+  bankName: "Barclays",
+  accountName: "Be Afrique Ltd",
+  sortCode: "12-34-56",       
   accountNumber: "12345678",
-  sortCode: "04-00-04",
-  iban: "GB00MONZ04000412345678",
-  bic: "MONZGB2L",
-  note: "Use your order name/number as payment reference.",
+  iban: "GB12BARC12345612345678",
+  bic: "BARCGB22",               
+  note: "Use your Order ID as the payment reference.",
 };
 
 export const STORE = {

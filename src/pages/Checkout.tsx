@@ -264,46 +264,50 @@ I'll send proof shortly.`;
 
         {/* Bank Transfer (alt) */}
         <div className="mt-6">
-          <p className="font-semibold">Or pay by Bank Transfer</p>
-          <div className="mt-2 p-4 rounded-lg bg-gray-50 border text-sm space-y-1">
-            <p><strong>Bank:</strong> {BANK.bankName}</p>
-            <p><strong>Account Name:</strong> {BANK.accountName}</p>
-            <p className="flex items-center justify-between">
-              <span>
-                <strong>Account No:</strong> {BANK.accountNumber}
-                {BANK.sortCode ? ` • Sort code: ${BANK.sortCode}` : ""}
-              </span>
-              <button onClick={() => copy(BANK.accountNumber)} className="ml-3 text-emerald-700 hover:underline">
-                Copy
-              </button>
-            </p>
-            {BANK.iban && (
-              <p className="flex items-center justify-between">
-                <span><strong>IBAN:</strong> {BANK.iban}</span>
-                <button onClick={() => copy(BANK.iban!)} className="ml-3 text-emerald-700 hover:underline">
-                  Copy
-                </button>
-              </p>
-            )}
-            <p className="mt-2 text-gray-600">
-              {BANK.note || "Use your Order ID as payment reference."}
-            </p>
-          </div>
+  <p className="font-semibold">Or pay by Bank Transfer</p>
+  <div className="mt-2 p-4 rounded-lg bg-gray-50 border text-sm space-y-2">
+    <p><strong>Bank:</strong> {BANK.bankName}</p>
+    <p><strong>Account Name:</strong> {BANK.accountName}</p>
 
-          <a
-            href={`https://wa.me/${BRAND.whatsapp}?text=` + encodeURIComponent(waText)}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex items-center justify-center w-full rounded-lg bg-brand text-white px-5 py-3 hover:bg-brand-dark"
-          >
-            Send Proof on WhatsApp
-          </a>
+    <div className="flex items-center justify-between">
+      <span><strong>Account No:</strong> {BANK.accountNumber}</span>
+      <button onClick={() => copy(BANK.accountNumber)} className="ml-3 text-emerald-700 hover:underline">
+        Copy
+      </button>
+    </div>
 
-          <button onClick={clear} className="mt-3 w-full rounded-lg border px-5 py-3 hover:bg-gray-50">
-            Clear Cart
-          </button>
-        </div>
+    {BANK.sortCode && (
+      <div className="flex items-center justify-between">
+        <span><strong>Sort code:</strong> {BANK.sortCode}</span>
+        <button onClick={() => copy(BANK.sortCode!)} className="ml-3 text-emerald-700 hover:underline">
+          Copy
+        </button>
+      </div>
+    )}
 
+    {BANK.iban && (
+      <div className="flex items-center justify-between">
+        <span><strong>IBAN:</strong> {BANK.iban}</span>
+        <button onClick={() => copy(BANK.iban!)} className="ml-3 text-emerald-700 hover:underline">
+          Copy
+        </button>
+      </div>
+    )}
+
+    {BANK.bic && (
+      <div className="flex items-center justify-between">
+        <span><strong>BIC/SWIFT:</strong> {BANK.bic}</span>
+        <button onClick={() => copy(BANK.bic!)} className="ml-3 text-emerald-700 hover:underline">
+          Copy
+        </button>
+      </div>
+    )}
+
+    <p className="mt-2 text-gray-600">
+      {BANK.note || "Use your Order ID as the payment reference."}
+    </p>
+  </div>
+</div>
         <p className="mt-4 text-xs text-gray-500">
           Card payments are processed securely by Stripe. Your items are reserved for 24h for bank transfers.
         </p>

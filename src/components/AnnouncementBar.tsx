@@ -15,13 +15,19 @@ export default function AnnouncementBar() {
 
   return (
     <div className="bg-emerald-950 text-emerald-50">
-      <div className="container relative flex items-center justify-center gap-3 py-2 text-xs md:text-sm">
-        <span className="inline-flex items-center gap-2 font-medium tracking-wide">
+      <div
+        className="
+          container relative flex flex-wrap items-center justify-center gap-x-3 gap-y-1
+          px-4 py-2 text-xs md:text-sm text-center
+          overflow-hidden
+          pr-10   /* reserve space for the close button on mobile */
+        "
+      >
+        <span className="inline-flex items-center gap-2 font-medium tracking-wide break-words">
           <span aria-hidden>🌿</span>
           <span>Made in limited quantities to reduce waste and promote sustainability.</span>
         </span>
 
-        {/* Optional: link to a page explaining your policy */}
         <Link
           to="/about"
           className="underline underline-offset-4 decoration-emerald-300 hover:decoration-yellow-400"
@@ -29,14 +35,17 @@ export default function AnnouncementBar() {
           Learn more
         </Link>
 
-        {/* Dismiss (optional) */}
+        {/* Dismiss */}
         <button
           aria-label="Close announcement"
           onClick={() => {
             localStorage.setItem(DISMISS_KEY, "1");
             setHidden(true);
           }}
-          className="absolute right-3 rounded-md px-2 py-1 hover:bg-emerald-900/60"
+          className="
+            absolute right-3 top-1/2 -translate-y-1/2
+            rounded-md px-2 py-1 hover:bg-emerald-900/60
+          "
         >
           ×
         </button>

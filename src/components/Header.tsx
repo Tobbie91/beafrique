@@ -128,7 +128,7 @@ export default function Header() {
                 <NavLink to="/about#values" onClick={() => setOpen(false)} className={({ isActive }) => link(isActive)}>
                   Our Values
                 </NavLink>
-                <NavLink to="/about#team" onClick={() => setOpen(false)} className={({ isActive }) => link(isActive)}>
+                <NavLink   to="/our-team" onClick={() => setOpen(false)} className={({ isActive }) => link(isActive)}>
                   Our Team
                 </NavLink>
               </div>
@@ -136,6 +136,9 @@ export default function Header() {
 
             <NavLink to="/what-we-do" onClick={() => setOpen(false)} className={({ isActive }) => link(isActive)}>
               What We Do
+            </NavLink>
+            <NavLink to="/client" onClick={() => setOpen(false)} className={({ isActive }) => link(isActive)}>
+             The Journey
             </NavLink>
             <NavLink to="/catalogue" onClick={() => setOpen(false)} className={({ isActive }) => link(isActive)}>
               Catalogue

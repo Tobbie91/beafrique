@@ -12,7 +12,7 @@ export default function BrandOwnerPage() {
       <section className="bg-emerald-900 text-emerald-50">
         <div className="container py-12 md:py-16">
           <div className="grid gap-8 md:grid-cols-2 items-center ">
-            <div className="mt-[-5em]">
+            <div className="lg:mt-[-5em] mt-[2em]">
               <span className="inline-flex items-center gap-2 rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold text-emerald-900 ring-1 ring-yellow-300">
                 Founder Story
               </span>

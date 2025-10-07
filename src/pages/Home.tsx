@@ -316,22 +316,23 @@ export default function Home() {
           research in sustainability to build a conscious fashion brand now present in the UK.
         </p>
 
-        <div className="mt-5 flex flex-wrap gap-3">
-          <a
-            href="https://www.vanguardngr.com/2025/08/be-afrique-nigerian-creative-brings-heritage-and-eco-fashion-to-britain/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-yellow-400 px-5 py-3 text-sm font-semibold text-emerald-900 hover:bg-yellow-500"
-          >
-            Read full article →
-          </a>
-          <a
-            href="/about#mission-vision"
-            className="inline-flex items-center gap-2 rounded-full border border-emerald-600 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-50"
-          >
-            Our mission & vision
-          </a>
-        </div>
+        <div className="mt-5 flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start gap-3 text-center md:text-left">
+  <a
+    href="https://www.vanguardngr.com/2025/08/be-afrique-nigerian-creative-brings-heritage-and-eco-fashion-to-britain/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-full bg-yellow-400 px-5 py-3 text-sm font-semibold text-emerald-900 hover:bg-yellow-500"
+  >
+    Read full article →
+  </a>
+  <a
+    href="/about#mission-vision"
+    className="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-full border border-emerald-600 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-50"
+  >
+    Our mission & vision
+  </a>
+</div>
+
       </div>
     </article>
   </div>
