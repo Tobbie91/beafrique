@@ -19,7 +19,7 @@ export default function Contact() {
     if (fd.get("email")) fd.set("_replyto", String(fd.get("email")));
 
     try {
-      const res = await fetch("https://formspree.io/f/mblrlpbd", {
+      const res = await fetch("https://formspree.io/f/xrbyajzj", {
         method: "POST",
         headers: { Accept: "application/json" },
         body: fd,
