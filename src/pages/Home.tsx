@@ -12,6 +12,7 @@ import slideImage1 from "../assets/images/pic1.jpeg";
 import slideImage2 from "../assets/images/pic2.jpeg";
 import slideImage3 from "../assets/images/pic3.jpeg";
 import Testimonials from "../components/Testimonials";
+import HomeCatalogueTeaser from "../components/HomeCatalogueTeaser";
 
 
 export default function Home() {
@@ -155,7 +156,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-
+          <HomeCatalogueTeaser />
           {/* Trust row */}
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className={`${card} flex items-center gap-3 p-3`}>
@@ -426,8 +427,8 @@ export default function Home() {
                       <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15">✉️</span>
                       <div>
                         <div className="font-medium">Email</div>
-                        <a href="mailto:hello@beafrique.com" className="text-emerald-100 hover:underline">
-                          hello@beafrique.com
+                        <a href="mailto:Bukonla@beafrique.com" className="text-emerald-100 hover:underline">
+                        Bukonla@beafrique.com
                         </a>
                       </div>
                     </div>

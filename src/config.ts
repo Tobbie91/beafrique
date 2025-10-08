@@ -13,7 +13,7 @@ export type BrandConfig = {
 export const BRAND: BrandConfig = {
   name: "Be Afrique",
   whatsapp: "447733729418",
-  email: "hello@beafrique.com",
+  email: "Bukonla@beafrique.com",
   phone: "+44 7733 729 418",
   address: "24 Jubilee Road, Southsea, Portsmouth PO4 0JE, United Kingdom",
   currencySymbol: "£",      // ← add this to silence TS2339
@@ -35,12 +35,12 @@ export type BankConfig = {
 
 export const BANK: BankConfig = {
   country: "GB",
-  bankName: "Barclays",
-  accountName: "Be Afrique Ltd",
-  sortCode: "12-34-56",       
-  accountNumber: "12345678",
-  iban: "GB12BARC12345612345678",
-  bic: "BARCGB22",               
+  bankName: "Tide bank / Clear bank",
+  accountName: "Be Afrique Limited",
+  sortCode: "04-06-05",       
+  accountNumber: "26481523",
+  // iban: "GB12BARC12345612345678",
+  // bic: "BARCGB22",               
   note: "Use your Order ID as the payment reference.",
 };
 

@@ -109,7 +109,7 @@ export default function Footer() {
             <h4 className="text-sm font-semibold tracking-wide text-yellow-300">Contact</h4>
             <ul className="mt-3 space-y-2 text-sm">
               <li>Phone: <a href="tel:+2348063328191" className="hover:text-yellow-300">+234 806 332 8191</a></li>
-              <li>Email: <a href="mailto:service.info@dexy-creation.com" className="hover:text-yellow-300">service.info@dexy-creation.com</a></li>
+              <li>Email: <a href="mailto:Bukonla@beafrique.com" className="hover:text-yellow-300">bukonla@beafrique.com</a></li>
               <li>Opening Hours: Mon–Sat (08:00–18:00), Sun Closed</li>
               <li>
                 Nigeria: <span className="text-emerald-50/90">Lagos</span>

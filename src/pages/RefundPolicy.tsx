@@ -125,8 +125,8 @@ export default function RefundPolicy() {
               </p>
               <p>
                 Email:{" "}
-                <a href="mailto:hello@beafrique.com" className="underline hover:no-underline">
-                  hello@beafrique.com
+                <a href="mailto:Bukonla@beafrique.com" className="underline hover:no-underline">
+                Bukonla@beafrique.com
                 </a>
               </p>
             </div>

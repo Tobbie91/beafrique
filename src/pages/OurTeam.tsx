@@ -39,9 +39,7 @@ const TEAM: Member[] = [
     name: "Amaka Patrick",
     role: "social media manager",
     photo: amakaImg, 
-  // ← local asset
-    // bio: "Campaign styling, lookbooks, partnerships & press.",
-    // socials: { instagram: "#", email: "press@beafrique.com" },
+
   },
 ];
 export default function OurTeam() {
@@ -157,7 +155,7 @@ export default function OurTeam() {
             </div>
             <div className="md:text-right">
               <a
-                href="mailto:hello@beafrique.com"
+                href="mailto:Bukonla@beafrique.com"
                 className="inline-flex items-center gap-2 rounded-full bg-yellow-400 px-6 py-3 text-sm font-semibold text-emerald-900 hover:bg-yellow-500"
               >
                 Get in touch →

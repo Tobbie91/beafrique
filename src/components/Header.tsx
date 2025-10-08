@@ -25,8 +25,8 @@ export default function Header() {
           <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:gap-6">
             <div className="flex items-center gap-2">
               <span>📧</span>
-              <a href="mailto:hello@beafrique.com" className="font-medium hover:underline">
-                hello@beafrique.com
+              <a href="mailto:Bukonla@beafrique.com" className="font-medium hover:underline">
+              Bukonla@beafrique.com
               </a>
             </div>
             <div className="flex items-center gap-2">
