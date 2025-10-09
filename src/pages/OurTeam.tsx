@@ -3,6 +3,7 @@ import bukonlaImg from "../assets/images/6.webp";
 import amakaImg   from "../assets/images/pic6.jpeg";
 import tariImg    from "../assets/images/pic7.jpeg";
 import osho    from "../assets/images/Oshopic.jpeg";
+import { Link } from "react-router-dom";
 
 type Member = {
   name: string;
@@ -149,18 +150,19 @@ export default function OurTeam() {
                 Want to collaborate or partner?
               </h4>
               <p className="mt-1 text-sm text-emerald-100/90">
-                Press, partnerships, or mentorship—our team would love to hear
+                Press, partnerships, or mentorship, our team would love to hear
                 from you.
               </p>
             </div>
             <div className="md:text-right">
-              <a
-                href="mailto:Bukonla@beafrique.com"
-                className="inline-flex items-center gap-2 rounded-full bg-yellow-400 px-6 py-3 text-sm font-semibold text-emerald-900 hover:bg-yellow-500"
-              >
-                Get in touch →
-              </a>
-            </div>
+  <Link
+    to="/contact"
+    className="inline-flex items-center gap-2 rounded-full bg-yellow-400 px-6 py-3 text-sm font-semibold text-emerald-900 hover:bg-yellow-500"
+    aria-label="Go to contact page"
+  >
+    Get in touch →
+  </Link>
+</div>
           </div>
         </div>
       </section>

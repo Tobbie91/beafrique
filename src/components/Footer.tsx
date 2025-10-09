@@ -47,11 +47,11 @@ export default function Footer() {
           </div>
 
           {/* Newsletter */}
-          <div className="rounded-2xl bg-emerald-800/40 ring-1 ring-white/10 p-3 sm:p-4">
-            <p className="text-sm text-emerald-100/90">
+          {/* <div className="rounded-2xl bg-emerald-800/40 ring-1 ring-white/10 p-3 sm:p-4"> */}
+            {/* <p className="text-sm text-emerald-100/90">
               Sign up for news, drops, and events. We won’t spam.
-            </p>
-            <form onSubmit={handleEmailSubmit} className="mt-3 flex flex-col sm:flex-row gap-2">
+            </p> */}
+            {/* <form onSubmit={handleEmailSubmit} className="mt-3 flex flex-col sm:flex-row gap-2">
               <div className="relative flex-1">
                 <input
                   type="email"
@@ -73,8 +73,8 @@ export default function Footer() {
                   Thanks—check your inbox to confirm.
                 </span>
               )}
-            </form>
-          </div>
+            </form> */}
+          {/* </div> */}
         </div>
 
         {/* Divider */}

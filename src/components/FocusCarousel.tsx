@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import imgWomen from "../assets/images/buk1.webp";
-import imgWomen2 from "../assets/images/2.webp";
-import imgWomen3 from "../assets/images/buk4.webp";
+import imgWomen2 from "../assets/images/buk3.webp";
+import imgWomen3 from "../assets/images/buk2.webp";
 
 type FocusItem = {
   title: string;
@@ -127,7 +127,7 @@ export default function FocusCarousel() {
                 "
               >
                 <div className="relative">
-                  <img src={f.image} alt={f.title} className="h-56 w-full object-cover" />
+                  <img src={f.image} alt={f.title} className="h-76 w-full object-cover" />
                   <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold text-emerald-900 ring-1 ring-yellow-300">
                     <CheckCircle2 className="w-3 h-3" /> Focus
                   </span>

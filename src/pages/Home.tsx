@@ -187,31 +187,7 @@ export default function Home() {
       {/* Focus carousel (kept) */}
       <FocusCarousel />
 
-      {/* Catalogue */}
-      {/* <HomeCatalogueTeaser/> */}
-      {/* <section className="py-14">
-        <div className="container">
-          <div className="text-center">
-            <p className="text-emerald-700 text-sm font-semibold tracking-wide">Designed by women for women</p>
-            <h2 className="text-3xl md:text-4xl font-bold mt-1 text-emerald-900">Shop / Catalogue</h2>
-            <div className="w-16 h-1 bg-yellow-400 rounded mx-auto mt-3" />
-          </div>
-
-          <div className="mt-8">
-            <CatalogueCards items={PRODUCTS.slice(0, 3)} />
-          </div>
-
-          <div className="mt-10 text-center">
-            <Link
-              to="/catalogue"
-              className="inline-flex items-center gap-2 rounded-full bg-yellow-400 hover:bg-yellow-500 text-emerald-900 px-6 py-3 text-sm font-semibold"
-            >
-              View all products <span aria-hidden>→</span>
-            </Link>
-          </div>
-        </div>
-      </section> */}
-
+     
       {/* About */}
       <section className="py-14">
         <div className="container grid grid-cols-1 md:grid-cols-2 gap-12 items-center">

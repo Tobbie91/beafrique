@@ -1,4 +1,4 @@
-import Image from "../assets/images/2.webp";
+import Image from "../assets/images/buk12d.jpeg";
 
 export default function About() {
   return (
@@ -16,7 +16,7 @@ export default function About() {
               </h1>
               <p className="mt-3 text-sm md:text-base text-emerald-100/90 max-w-xl">
                 We create sustainable ready-to-wear that celebrates African identity, empowers women,
-                and protects the planet—crafted in the spirit of culture and community.
+                and protects the planet, crafted in the spirit of culture and community.
               </p>
             </div>
 
@@ -46,7 +46,7 @@ export default function About() {
               <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-yellow-400 text-emerald-900 font-bold">♻️</div>
               <h3 className="mt-4 text-lg font-semibold text-emerald-900">Sustainability</h3>
               <p className="mt-2 text-[15px] leading-relaxed text-gray-700">
-                Ethical, eco-friendly practices at the core—so fashion feels good on you and the planet.
+                Ethical, eco-friendly practices at the core, so fashion feels good on you and the planet.
               </p>
             </div>
 
@@ -54,7 +54,7 @@ export default function About() {
               <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-yellow-400 text-emerald-900 font-bold">🪡</div>
               <h3 className="mt-4 text-lg font-semibold text-emerald-900">Craft & Heritage</h3>
               <p className="mt-2 text-[15px] leading-relaxed text-gray-700">
-                Designs that celebrate African identity, artistry, and stories—stitched with intention.
+                Designs that celebrate African identity, artistry, and stories stitched with intention.
               </p>
             </div>
 
@@ -96,7 +96,7 @@ export default function About() {
               <p className="mt-4 text-[15px] leading-relaxed text-gray-700">
                 At BeAfrique, our mission is to craft eco-friendly and sustainable ready-to-wear designs that celebrate African
                 heritage and identity. We promote cultural awareness with timeless pieces that inspire Africans in the diaspora
-                to embrace their roots—while welcoming everyone who appreciates the beauty and artistry of African fashion.
+                to embrace their roots, while welcoming everyone who appreciates the beauty and artistry of African fashion.
                 Our commitment is to people and the planet, ensuring every design uplifts culture, fosters pride, and supports
                 a more sustainable future.
               </p>
@@ -117,9 +117,9 @@ export default function About() {
                 </span>
               </div>
               <p className="mt-4 text-[15px] leading-relaxed text-gray-700">
-                Our vision is to become a leading global brand in sustainable African fashion—bridging cultures, empowering
-                communities, and setting new standards for ethical style. We aspire to a world where African-inspired fashion is
-                embraced universally—not only as a statement of identity but as a movement toward conscious, responsible living.
+                Our vision is to become a leading global brand in sustainable African fashion bridging cultures, empowering
+                communities, and setting new standards for ethical style. We aspire to a world where African inspired fashion is
+                embraced universally not only as a statement of identity but as a movement toward conscious, responsible living.
               </p>
             </article>
           </div>
@@ -135,7 +135,7 @@ export default function About() {
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-gray-700">
               <p>
                 Be Afrique was born from a love of African fashion and a passion for sustainability. We create eco-friendly,
-                sustainable ready-to-wear designs that celebrate African heritage and identity—inviting the world to wear culture
+                sustainable ready-to-wear designs that celebrate African heritage and identity, inviting the world to wear culture
                 with pride while caring for the planet.
               </p>
               <p>
@@ -145,7 +145,7 @@ export default function About() {
               </p>
               <p>
                 Our mission goes beyond style. We protect people and planet by crafting with responsible materials and mindful
-                production. Be Afrique is a movement—to embrace identity, champion sustainability, and celebrate African culture
+                production. Be Afrique is a movement to embrace identity, champion sustainability, and celebrate African culture
                 everywhere.
               </p>
             </div>
