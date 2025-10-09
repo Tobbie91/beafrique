@@ -34,7 +34,7 @@ export default function ContactForm() {
       <input name="name" placeholder="Your name" required className="border p-2 rounded w-full" />
       <input name="email" type="email" placeholder="Your email" required className="border p-2 rounded w-full" />
       <input name="phone" placeholder="Phone" className="border p-2 rounded w-full" />
-      <textarea name="message" placeholder="Tell us a bit about your project" required className="border p-2 rounded w-full" />
+      <textarea name="message" placeholder="Tell us a bit about your request" required className="border p-2 rounded w-full" />
       <button disabled={status==="sending"} className="bg-emerald-600 text-white px-4 py-2 rounded">
         {status==="sending" ? "Sending…" : "Send"}
       </button>
