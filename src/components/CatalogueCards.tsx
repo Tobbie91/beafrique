@@ -36,20 +36,23 @@ export default function CatalogueCards({ items, getOutsideLink }: Props) {
             <div className="p-5 text-emerald-50">
   {/* UK store CTA pill (centered) */}
   <div className="flex justify-center">
-    <a
-      href={outside || "#"}
-      target={outside ? "_blank" : undefined}
-      rel={outside ? "noreferrer" : undefined}
-      aria-disabled={!outside}
-      className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition
-  ${outside
-    ? "bg-yellow-300 hover:bg-yellow-400 text-emerald-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-200"
-    : "bg-emerald-50 text-emerald-400 ring-1 ring-emerald-200 cursor-not-allowed pointer-events-none"}
-`}
-
-    >
-      Buy from our UK store
-    </a>
+    {outside ? (
+      <a
+        href={outside}
+        target="_blank"
+        rel="noreferrer"
+        className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition bg-yellow-300 hover:bg-yellow-400 text-emerald-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-200"
+      >
+        Buy from our UK store
+      </a>
+    ) : (
+      <Link
+        to={`/products/${p.slug}`}
+        className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition bg-emerald-50 text-emerald-900 ring-1 ring-emerald-200 hover:bg-yellow-300 hover:text-emerald-900 hover:ring-transparent focus:outline-none focus:ring-2 focus:ring-yellow-200"
+      >
+        Buy from our UK store
+      </Link>
+    )}
   </div>
 
   {/* Optional tiny note under CTA */}

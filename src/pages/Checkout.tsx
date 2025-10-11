@@ -262,52 +262,7 @@ I'll send proof shortly.`;
           {busy ? "Redirecting…" : "Pay with Card (Secure)"}
         </button>
 
-        {/* Bank Transfer (alt) */}
-        <div className="mt-6">
-  <p className="font-semibold">Or pay by Bank Transfer</p>
-  <div className="mt-2 p-4 rounded-lg bg-gray-50 border text-sm space-y-2">
-    <p><strong>Bank:</strong> {BANK.bankName}</p>
-    <p><strong>Account Name:</strong> {BANK.accountName}</p>
-
-    <div className="flex items-center justify-between">
-      <span><strong>Account No:</strong> {BANK.accountNumber}</span>
-      <button onClick={() => copy(BANK.accountNumber)} className="ml-3 text-emerald-700 hover:underline">
-        Copy
-      </button>
-    </div>
-
-    {BANK.sortCode && (
-      <div className="flex items-center justify-between">
-        <span><strong>Sort code:</strong> {BANK.sortCode}</span>
-        <button onClick={() => copy(BANK.sortCode!)} className="ml-3 text-emerald-700 hover:underline">
-          Copy
-        </button>
-      </div>
-    )}
-
-    {BANK.iban && (
-      <div className="flex items-center justify-between">
-        <span><strong>IBAN:</strong> {BANK.iban}</span>
-        <button onClick={() => copy(BANK.iban!)} className="ml-3 text-emerald-700 hover:underline">
-          Copy
-        </button>
-      </div>
-    )}
-
-    {BANK.bic && (
-      <div className="flex items-center justify-between">
-        <span><strong>BIC/SWIFT:</strong> {BANK.bic}</span>
-        <button onClick={() => copy(BANK.bic!)} className="ml-3 text-emerald-700 hover:underline">
-          Copy
-        </button>
-      </div>
-    )}
-
-    <p className="mt-2 text-gray-600">
-      {BANK.note || "Use your Order ID as the payment reference."}
-    </p>
-  </div>
-</div>
+    
         <p className="mt-4 text-xs text-gray-500">
           Card payments are processed securely by Stripe. Your items are reserved for 24h for bank transfers.
         </p>
