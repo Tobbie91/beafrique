@@ -128,7 +128,7 @@ export function FeaturedBook() {
       <div className="container grid md:grid-cols-2 gap-8 items-center">
       
         <div>
-          <p className="text-emerald-700 font-semibold uppercase tracking-wide text-xs">New e‑book</p>
+          <p className="text-emerald-700 font-semibold uppercase tracking-wide text-xs"> E‑book</p>
           <h3 className="text-2xl font-bold mt-1">Make Massive Income Sewing from Home</h3>
           <p className="text-gray-700 mt-3">
             Learn proven steps to professionalize your sewing craft and build consistent income from home.
