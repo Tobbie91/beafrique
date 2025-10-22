@@ -19,7 +19,7 @@ const cl = (
   ]
     .filter(Boolean)
     .join(",");
-  return `https://res.cloudinary.com/${CLOUD}/image/upload/${parts}/${publicId}.jpg`;
+  return `https://res.cloudinary.com/dbl85m2kz/image/upload/${parts}/${publicId}.jpg`;
 };
 // ------------------------------------------------------------
 
