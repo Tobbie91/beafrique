@@ -20,13 +20,15 @@ import AdminSignIn from "./pages/AdminSignIn";
 import CartPage from "./pages/Cart";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import CheckoutCancel from "./pages/CheckoutCancel";
+import FormerDesigns from "./pages/FormerDesigns";
+import Book from "./pages/Resources";
+import BookThankYou from "./pages/BookThankYou";
 
 export default function App() {
   return (
     <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
-
         {/* public pages */}
         <Route path="/about" element={<About />} />
         <Route path="/our-team" element={<OurTeam />} />
@@ -34,13 +36,15 @@ export default function App() {
         <Route path="/catalogue" element={<Catalogue />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/client" element={<Client />} />
+        <Route path="/former-designs" element={<FormerDesigns />} />
         <Route path="/refund-policy" element={<RefundPolicy />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/cart" element={<CartPage />} />
-        {/* admin sign-in (public) */}
+        <Route path="/resources" element={<Book />} />
+        <Route path="/book/thank-you" element={<BookThankYou />} />
+
         <Route path="/admin/sign-in" element={<AdminSignIn />} />
 
-        {/* protected admin */}
         <Route
           path="/admin"
           element={
@@ -49,7 +53,6 @@ export default function App() {
             </AdminGuard>
           }
         />
-
         {/* protect the new-product page too */}
         <Route
           path="/admin/products/new"
@@ -59,17 +62,13 @@ export default function App() {
             </AdminGuard>
           }
         />
-
         {/* product pages */}
         <Route path="/products/:slug" element={<ProductDetail />} />
         <Route path="/products" element={<ProductsTest />} />
-
         {/* catch-all LAST */}
         <Route path="*" element={<Navigate to="/" replace />} />
-        // e.g. in App.tsx
-<Route path="/checkout/success" element={<CheckoutSuccess />} />
-<Route path="/checkout/cancel" element={<CheckoutCancel />} />
-
+        <Route path="/checkout/success" element={<CheckoutSuccess />} />
+        <Route path="/checkout/cancel" element={<CheckoutCancel />} />
       </Routes>
     </Layout>
   );

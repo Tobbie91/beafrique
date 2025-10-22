@@ -86,8 +86,8 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold tracking-wide text-yellow-300">About</h4>
             <p className="mt-3 text-sm leading-relaxed text-emerald-50/90">
-              We are a purpose-driven fashion brand focused on environmental consciousness and social
-              impact. We empower women with unique, expressive pieces—fostering independence and growth.
+              We are a purpose driven fashion brand focused on environmental consciousness and social
+              impact. We empower women with unique, expressive pieces, fostering independence and growth.
             </p>
           </div>
 
@@ -111,10 +111,10 @@ export default function Footer() {
               <li>Phone: <a href="tel:+2348063328191" className="hover:text-yellow-300">+234 806 332 8191</a></li>
               <li>Email: <a href="mailto:Bukonla@beafrique.com" className="hover:text-yellow-300">bukonla@beafrique.com</a></li>
               <li>Opening Hours: Mon–Sat (08:00–18:00), Sun Closed</li>
-              <li>
+              {/* <li>
                 Nigeria: <span className="text-emerald-50/90">Lagos</span>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 UK:{" "}
                 <a
                   className="hover:text-yellow-300"
@@ -124,7 +124,7 @@ export default function Footer() {
                 >
                   24 Jubilee Road, Southsea, Portsmouth, PO40JE
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -190,9 +190,9 @@ export default function Footer() {
         <div className="container h-14 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-emerald-100/90">
           <p>© {new Date().getFullYear()} {BRAND.name}. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <Link to="/privacy" className="hover:text-yellow-300">Privacy</Link>
+            <Link to="/refund-policy" className="hover:text-yellow-300">Privacy</Link>
             <span aria-hidden>•</span>
-            <Link to="/terms" className="hover:text-yellow-300">Terms</Link>
+            <Link to="/refund-policy" className="hover:text-yellow-300">Terms</Link>
           </div>
         </div>
       </div>

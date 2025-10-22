@@ -68,7 +68,7 @@ export default function WhatWeDo() {
             {[
               {
                 icon: <Shirt className="w-5 h-5" />,
-                title: "Ready-to-Wear",
+                title: "Ready to Wear",
                 text: "Seasonal drops with timeless silhouettes, premium finishing, and versatile styling.",
                 link: "/catalogue",
                 cta: "View collection",
@@ -76,7 +76,7 @@ export default function WhatWeDo() {
               {
                 icon: <Ruler className="w-5 h-5" />,
                 title: "Bespoke & Fittings",
-                text: "Made-to-measure pieces, studio fittings, and personalized adjustments for perfect fit.",
+                text: "Made to measure pieces, studio fittings, and personalized adjustments for perfect fit.",
                 link: "/contact",
                 cta: "Start your fitting",
               },
@@ -97,14 +97,14 @@ export default function WhatWeDo() {
               {
                 icon: <Gem className="w-5 h-5" />,
                 title: "Bridal & Occasion",
-                text: "Custom bridal and special-occasion looks that honor culture and elevate your moment.",
+                text: "Custom bridal and special occasion looks that honor culture and elevate your moment.",
                 link: "/contact",
                 cta: "Design my look",
               },
               {
                 icon: <GraduationCap className="w-5 h-5" />,
                 title: "Workshops & Mentorship",
-                text: "Hands-on learning for aspiring designers—skills, sustainability, and business basics.",
+                text: "Hands on learning for aspiring designers skills, sustainability, and business basics.",
                 link: "/about#mission-vision",
                 cta: "Learn more",
               },
@@ -145,9 +145,9 @@ export default function WhatWeDo() {
             {[
               { icon: <Sparkles className="w-5 h-5" />, title: "Consult", text: "Share your vision, timeline, and budget." },
               { icon: <Ruler className="w-5 h-5" />, title: "Design", text: "We sketch, source, and confirm details." },
-              { icon: <ShieldCheck className="w-5 h-5" />, title: "Fitting", text: "Measurements and try-ons for precision." },
+              { icon: <ShieldCheck className="w-5 h-5" />, title: "Fitting", text: "Measurements and try ons for precision." },
               { icon: <Leaf className="w-5 h-5" />, title: "Make", text: "Mindful production with quality control." },
-              { icon: <Truck className="w-5 h-5" />, title: "Deliver", text: "Pickup or shipping—track & enjoy." },
+              { icon: <Truck className="w-5 h-5" />, title: "Deliver", text: "Pickup or shipping track & enjoy." },
             ].map((step, i) => (
               <div key={step.title} className="rounded-2xl bg-white ring-1 ring-gray-200 p-5 text-center shadow-sm">
                 <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-yellow-400 text-emerald-900 ring-1 ring-yellow-300">
@@ -205,7 +205,7 @@ export default function WhatWeDo() {
         <div className="py-6">
           <p className="font-semibold text-emerald-900">
             <span className="mr-2 select-none">–</span>
-            Do we have a pick-up location?
+            Do we have a pick up location?
           </p>
           <p className="mt-2 text-[15px] leading-7 text-gray-700">
             Yes. You can walk in to pick up your order and make payment at our UK studio:
@@ -249,7 +249,7 @@ export default function WhatWeDo() {
             Are your outfits ready-made or custom?
           </p>
           <p className="mt-2 text-[15px] leading-7 text-gray-700">
-            Most designs are <span className="font-medium">ready-to-wear</span>, but we also offer
+            Most designs are <span className="font-medium">ready to wear</span>, but we also offer
             custom sizing for select pieces. If you’d like a custom fit, please contact us before placing an order.
           </p>
         </div>
@@ -292,7 +292,7 @@ export default function WhatWeDo() {
               Ready to create something special?
             </h3>
             <p className="mt-2 text-sm md:text-base text-gray-700">
-              Share your ideas and timeline—let’s design a piece that fits your story and your life.
+              Share your ideas and timeline, let’s design a piece that fits your story and your life.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 md:justify-end">

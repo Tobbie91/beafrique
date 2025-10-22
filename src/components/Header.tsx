@@ -95,6 +95,8 @@ export default function Header() {
           <NavLink to="/what-we-do" className={({ isActive }) => link(isActive)}>What We Do</NavLink>
           <NavLink to="/client" className={({ isActive }) => link(isActive)}>The Journey</NavLink>
           <NavLink to="/catalogue" className={({ isActive }) => link(isActive)}>Catalogue</NavLink>
+          <NavLink to="/former-designs" className={({ isActive }) => link(isActive)}>Past Collections</NavLink>
+          <NavLink to="/resources" className={({ isActive }) => link(isActive)}>Books</NavLink>
           <NavLink to="/contact" className={({ isActive }) => link(isActive)}>Contact Us</NavLink>
 
           {/* Drop-in cart icon */}
@@ -139,6 +141,12 @@ export default function Header() {
             </NavLink>
             <NavLink to="/client" onClick={() => setOpen(false)} className={({ isActive }) => link(isActive)}>
              The Journey
+            </NavLink>
+            <NavLink to="/former-designs" onClick={() => setOpen(false)} className={({ isActive }) => link(isActive)}>
+            Past Collections
+            </NavLink>
+            <NavLink to="/resources" onClick={() => setOpen(false)} className={({ isActive }) => link(isActive)}>
+       Books
             </NavLink>
             <NavLink to="/catalogue" onClick={() => setOpen(false)} className={({ isActive }) => link(isActive)}>
               Catalogue

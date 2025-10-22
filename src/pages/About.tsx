@@ -15,7 +15,7 @@ export default function About() {
                 Conscious fashion, rooted in heritage.
               </h1>
               <p className="mt-3 text-sm md:text-base text-emerald-100/90 max-w-xl">
-                We create sustainable ready-to-wear that celebrates African identity, empowers women,
+                We create sustainable ready to wear that celebrates African identity, empowers women,
                 and protects the planet, crafted in the spirit of culture and community.
               </p>
             </div>
@@ -46,7 +46,7 @@ export default function About() {
               <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-yellow-400 text-emerald-900 font-bold">♻️</div>
               <h3 className="mt-4 text-lg font-semibold text-emerald-900">Sustainability</h3>
               <p className="mt-2 text-[15px] leading-relaxed text-gray-700">
-                Ethical, eco-friendly practices at the core, so fashion feels good on you and the planet.
+                Ethical, eco friendly practices at the core, so fashion feels good on you and the planet.
               </p>
             </div>
 
@@ -94,7 +94,7 @@ export default function About() {
                 </span>
               </div>
               <p className="mt-4 text-[15px] leading-relaxed text-gray-700">
-                At BeAfrique, our mission is to craft eco-friendly and sustainable ready-to-wear designs that celebrate African
+                At BeAfrique, our mission is to craft eco-friendly and sustainable ready to wear designs that celebrate African
                 heritage and identity. We promote cultural awareness with timeless pieces that inspire Africans in the diaspora
                 to embrace their roots, while welcoming everyone who appreciates the beauty and artistry of African fashion.
                 Our commitment is to people and the planet, ensuring every design uplifts culture, fosters pride, and supports
@@ -134,8 +134,8 @@ export default function About() {
             <div className="mt-2 h-1 w-16 bg-yellow-400 rounded" />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-gray-700">
               <p>
-                Be Afrique was born from a love of African fashion and a passion for sustainability. We create eco-friendly,
-                sustainable ready-to-wear designs that celebrate African heritage and identity, inviting the world to wear culture
+                Be Afrique was born from a love of African fashion and a passion for sustainability. We create eco friendly,
+                sustainable ready to wear designs that celebrate African heritage and identity, inviting the world to wear culture
                 with pride while caring for the planet.
               </p>
               <p>
@@ -192,7 +192,7 @@ export default function About() {
       <section className="py-14 bg-emerald-900 text-emerald-50">
         <div className="container grid gap-6 md:grid-cols-2 items-center">
           <div>
-            <h3 className="text-2xl md:text-3xl font-bold">Join the movement—wear culture with pride.</h3>
+            <h3 className="text-2xl md:text-3xl font-bold">Join the movement, wear culture with pride.</h3>
             <p className="mt-2 text-sm md:text-base text-emerald-100/90">
               Explore our latest drops or learn how we’re empowering women and communities.
             </p>

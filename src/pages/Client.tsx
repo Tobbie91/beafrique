@@ -1,6 +1,6 @@
 import { BRAND } from "../config";
 import brandOwnerImage2 from "../assets/images/6.webp";
-import brandOwnerImage from "../assets/images/pic4.jpeg";
+import brandOwnerImage from "../assets/images/6.webp";
 
 export default function BrandOwnerPage() {
   const brandName = BRAND?.name || "Be Afrique";
@@ -20,7 +20,7 @@ export default function BrandOwnerPage() {
                 From grassroots tailoring to a global movement
               </h1>
               <p className="mt-3 text-sm md:text-base text-emerald-100/90 max-w-xl">
-                Bukonla’s journey—from Unilorin to the UK—shapes {brandName}: a sustainable fashion
+                Bukonla’s journey from Unilorin to the UK, shapes {brandName}: a sustainable fashion
                 house celebrating African identity, empowering women, and designing for the planet.
               </p>
 
@@ -69,19 +69,19 @@ export default function BrandOwnerPage() {
                 icon: "🪡",
                 title: "Craft & Heritage",
                 text:
-                  "Rooted in African identity and artisanal traditions—pieces that carry stories of home and pride.",
+                  "Rooted in African identity and artisanal traditions pieces that carry stories of home and pride.",
               },
               {
                 icon: "♻️",
                 title: "Sustainability",
                 text:
-                  "Eco-friendly materials, mindful production, and circular ideas—style that cares for people and planet.",
+                  "Eco friendly materials, mindful production, and circular ideas style that cares for people and planet.",
               },
               {
                 icon: "🤝",
                 title: "Empowerment",
                 text:
-                  "A movement for women and communities—skills, dignity, and opportunity stitched into every seam.",
+                  "A movement for women and communities skills, dignity, and opportunity stitched into every seam.",
               },
             ].map((v) => (
               <div
@@ -179,14 +179,14 @@ export default function BrandOwnerPage() {
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-gray-700">
               <p>
                 {brandName} creates sustainable ready-to-wear that celebrates African heritage and identity.
-                We invite the world to wear culture with pride—while respecting the earth we share.
+                We invite the world to wear culture with pride, while respecting the earth we share.
               </p>
               <p>
                 Clothing is more than fabric; it’s memory, meaning, and belonging. Our designs
-                reflect stories of tradition and community, made with eco-friendly materials and mindful production.
+                reflect stories of tradition and community, made with eco friendly materials and mindful production.
               </p>
               <p>
-                Innovation meets culture in unexpected ways—like upcycling <strong>snail shells</strong> into
+                Innovation meets culture in unexpected ways like upcycling <strong>snail shells</strong> into
                 textural details, turning waste into beauty and narrative.
               </p>
             </div>
@@ -248,7 +248,7 @@ export default function BrandOwnerPage() {
       <section className="py-14 bg-emerald-900 text-emerald-50">
         <div className="container grid gap-6 md:grid-cols-2 items-center">
           <div>
-            <h3 className="text-2xl md:text-3xl font-bold">Join the movement—wear culture with pride.</h3>
+            <h3 className="text-2xl md:text-3xl font-bold">Join the movement, wear culture with pride.</h3>
             <p className="mt-2 text-sm md:text-base text-emerald-100/90">
               Explore new drops, read our values, or partner with us on sustainable initiatives.
             </p>

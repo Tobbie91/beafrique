@@ -56,7 +56,7 @@ export default function Contact() {
           <ul className="mt-6 space-y-4 text-gray-700 text-lg">
             <li><strong>📞 Phone:</strong> {BRAND.phone}</li>
             <li><strong>📧 Email:</strong> {BRAND.email}</li>
-            <li><strong>🏢 Address:</strong> {BRAND.address}</li>
+            {/* <li><strong>🏢 Address:</strong> {BRAND.address}</li> */}
           </ul>
 
           <a

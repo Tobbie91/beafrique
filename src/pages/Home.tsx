@@ -1,18 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Sparkles, Leaf, ShieldCheck, Truck } from "lucide-react";
-
-import { PRODUCTS } from "../data/products";
 import FocusCarousel from "../components/FocusCarousel";
-import CatalogueCards from "../components/CatalogueCards";
-
-import AboutUsImage from "../assets/images/buk4.webp";
-import pressImage from "../assets/images/6.webp";         
-import slideImage1 from "../assets/images/pic1.jpeg";
-import slideImage2 from "../assets/images/pic2.jpeg";
-import slideImage3 from "../assets/images/pic3.jpeg";
+import AboutUsImage from "../assets/images/buk4.webp"; 
+import slideImage1 from "../assets/images/buk1.webp";
+import slideImage2 from "../assets/images/buk2.webp";
+import slideImage3 from "../assets/images/buk4.webp";
 import Testimonials from "../components/Testimonials";
 import HomeCatalogueTeaser from "../components/HomeCatalogueTeaser";
+import FeaturedRow from "../components/FeaturedRow";
+import MagazineFeature from "../components/MagazineFeature";
 
 
 export default function Home() {
@@ -26,7 +23,7 @@ export default function Home() {
   
   const slides: Slide[] = useMemo(
     () => [
-      { image: slideImage1, title: "Wear Your Confidence, Crafted by Women.", text: "Embrace the elegance of African-inspired ready-to-wear fashion...", cta: { label: "Shop New Arrivals", href: "/catalogue" } },
+      { image: slideImage1, title: "Wear Your Confidence, Crafted by Women.", text: "Embrace the elegance of African-inspired ready to wear fashion...", cta: { label: "Shop New Arrivals", href: "/catalogue" } },
       { image: slideImage2, title: "Elegance in Every Stitch, Sustainability in Every Thread.", text: "Our clothes are not just made, they are created with passion...", cta: { label: "Explore Our Catalogue", href: "/catalogue" } },
       { image: slideImage3, title: "Empowering Women, One Garment at a Time.", text: "Be part of a movement that supports artisans...", cta: { label: "Learn About Us", href: "/about" } },
     ],
@@ -234,86 +231,20 @@ export default function Home() {
           </div>
         </div>
       </section>
-{/* Press / Insights */}
-<section className="py-14 relative isolate">
-  {/* subtle background accents */}
-  <div className="pointer-events-none absolute inset-0 -z-10 opacity-70 [background:
-    radial-gradient(600px_600px_at_0%_0%,rgba(250,204,21,0.08),transparent_60%),
-    radial-gradient(800px_800px_at_100%_100%,rgba(16,185,129,0.08),transparent_60%)]" />
 
-  <div className="container">
-    {/* Header */}
-    <div className="mb-10 text-center">
-      <span className="inline-flex items-center gap-2 rounded-full bg-yellow-100 text-emerald-800 px-3 py-1 text-xs font-semibold ring-1 ring-yellow-200">
-        From the press
-      </span>
-      <h2 className="mt-3 text-3xl md:text-4xl font-bold text-emerald-900">
-        Featured News & Insights
-      </h2>
-      <div className="mt-2 h-1 w-16 bg-yellow-400 rounded mx-auto" />
-    </div>
-
-    {/* Feature card */}
-    <article className="grid grid-cols-1 md:grid-cols-[minmax(260px,38%)_1fr] gap-5 items-stretch">
-      {/* Image side */}
-      <div className="relative overflow-hidden rounded-3xl ring-1 ring-gray-200 shadow-sm">
-        <img
-          src={pressImage}
-          alt="Be Afrique: Nigerian fashion designer brings heritage and eco-fashion to Britain"
-          className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
-        />
-        {/* badges */}
-        <div className="absolute top-3 left-3 flex items-center gap-2">
-          <span className="rounded-full bg-yellow-400 text-emerald-900 text-xs font-bold px-3 py-1 ring-1 ring-yellow-300 shadow">
-            Press
-          </span>
-          <span className="hidden sm:inline rounded-full bg-white/85 backdrop-blur px-3 py-1 text-xs font-semibold text-emerald-900 ring-1 ring-white/60">
-            Vanguard
-          </span>
-        </div>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
-      </div>
-
-      {/* Content side */}
-      <div className="rounded-3xl ring-1 ring-gray-200 bg-white p-6 md:p-8 shadow-sm">
-        <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
-          <span className="font-semibold text-emerald-900">Vanguard</span>
-          <span aria-hidden>•</span>
-          <time dateTime="2025-08-01">Aug 2025</time>
-          <span aria-hidden>•</span>
-          <span>2 min read</span>
-        </div>
-
-        <h3 className="mt-3 text-xl md:text-2xl font-semibold leading-snug text-emerald-900">
-          Be Afrique: Nigerian fashion designer brings heritage and eco-fashion to Britain
-        </h3>
-
-        <p className="mt-3 text-[15px] md:text-base leading-relaxed text-gray-700">
-          Bukonla, a Nigerian-born fashion designer and writer, blends tailoring roots with academic
-          research in sustainability to build a conscious fashion brand now present in the UK.
-        </p>
-
-        <div className="mt-5 flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start gap-3 text-center md:text-left">
-  <a
-    href="https://www.vanguardngr.com/2025/08/be-afrique-nigerian-creative-brings-heritage-and-eco-fashion-to-britain/"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-full bg-yellow-400 px-5 py-3 text-sm font-semibold text-emerald-900 hover:bg-yellow-500"
-  >
-    Read full article →
-  </a>
-  <a
-    href="/about#mission-vision"
-    className="w-full sm:w-auto inline-flex justify-center items-center gap-2 rounded-full border border-emerald-600 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-50"
-  >
-    Our mission & vision
-  </a>
-</div>
-
-      </div>
-    </article>
-  </div>
-</section>
+<FeaturedRow />
+<MagazineFeature
+        publication="Fashion Beauty"
+        dateISO="2025-10"
+        title="Be Afrique pieces featured in leading magazine"
+        blurb="A beautiful editorial featuring Be Afrique garments, celebrating heritage and contemporary silhouettes."
+        articleUrl="https://drive.google.com/uc?export=download&id=1DqPoMywiA6vYf3gaI0qgVxhBGDXYe_WD"
+        images={[
+          { src: "https://res.cloudinary.com/dbl85m2kz/image/upload/v1761102279/pd1ps4udpl2lneiveifi.png", alt: "Cover" },
+          { src: "https://res.cloudinary.com/dbl85m2kz/image/upload/v1761102232/pwtxw5brdovdjpvtkz5i.png" },
+          { src: "https://res.cloudinary.com/dbl85m2kz/image/upload/v1761102255/ohzcjsfjvrmfc3dj7qov.png" },
+        ]}
+      />
 
 <Testimonials />
 
@@ -415,7 +346,7 @@ export default function Home() {
                         <div className="text-emerald-100">Mon–Sat (08:00–21:00), Sun Closed</div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
+                    {/* <div className="flex items-center gap-3">
                       <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/15">📍</span>
                       <div>
                         <div className="font-medium">Address</div>
@@ -427,7 +358,7 @@ export default function Home() {
                           24 Jubilee Road, Southsea<br />Portsmouth, United Kingdom PO40JE
                         </a>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="mt-5 grid grid-cols-2 gap-3 text-xs">
