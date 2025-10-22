@@ -34,46 +34,45 @@ export default function CatalogueCards({ items, getOutsideLink }: Props) {
             {/* Title bar (same emerald, yellow accent) */}
             {/* Bottom panel (emerald all through) */}
             <div className="p-5 text-emerald-50">
-  {/* UK store CTA pill (centered) */}
-  <div className="flex justify-center">
-    {outside ? (
-      <a
-        href={outside}
-        target="_blank"
-        rel="noreferrer"
-        className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition bg-yellow-300 hover:bg-yellow-400 text-emerald-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-200"
-      >
-        Buy from our UK store
-      </a>
-    ) : (
-      <Link
-        to={`/products/${p.slug}`}
-        className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition bg-emerald-50 text-emerald-900 ring-1 ring-emerald-200 hover:bg-yellow-300 hover:text-emerald-900 hover:ring-transparent focus:outline-none focus:ring-2 focus:ring-yellow-200"
-      >
-        Buy from our UK store
-      </Link>
-    )}
-  </div>
+              {/* UK store CTA pill (centered) */}
+              <div className="flex justify-center">
+                {outside ? (
+                  <a
+                    href={outside}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition bg-yellow-300 hover:bg-yellow-400 text-emerald-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-200"
+                  >
+                    Buy from our UK store
+                  </a>
+                ) : (
+                  <Link
+                    to={`/products/${p.slug}`}
+                    className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition bg-emerald-50 text-emerald-900 ring-1 ring-emerald-200 hover:bg-yellow-300 hover:text-emerald-900 hover:ring-transparent focus:outline-none focus:ring-2 focus:ring-yellow-200"
+                  >
+                    Buy from our UK store
+                  </Link>
+                )}
+              </div>
 
-  {/* Optional tiny note under CTA */}
-  <p className="mt-2 text-xs text-emerald-200 text-center">
-    {/* Ships from Portsmouth, United Kingdom */}
-  </p>
+              {/* Optional tiny note under CTA */}
+              <p className="mt-2 text-xs text-emerald-200 text-center">
+                {/* Ships from Portsmouth, United Kingdom */}
+              </p>
 
-  {/* WhatsApp round button */}
-  <div className="mt-4 flex justify-center">
-    <a
-      href={`https://wa.me/${BRAND.whatsapp}?text=${waText}`}
-      target="_blank"
-      rel="noreferrer"
-      aria-label="Chat on WhatsApp"
-      className="h-12 w-12 grid place-items-center rounded-full bg-white text-emerald-900 shadow-sm hover:bg-yellow-400 transition"
-    >
-      <MessageCircle className="w-5 h-5" />
-    </a>
-  </div>
-</div>
-
+              {/* WhatsApp round button */}
+              <div className="mt-4 flex justify-center">
+                <a
+                  href={`https://wa.me/${BRAND.whatsapp}?text=${waText}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Chat on WhatsApp"
+                  className="h-12 w-12 grid place-items-center rounded-full bg-white text-emerald-900 shadow-sm hover:bg-yellow-400 transition"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
           </article>
         );
       })}

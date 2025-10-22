@@ -1,17 +1,14 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
-import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import About from "./pages/About";
-import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import Checkout from "./pages/Checkout";
 import WhatWeDo from "./pages/WhatWeDo";
 import Catalogue from "./pages/Catalogue";
 import Client from "./pages/Client";
 import OurTeam from "./pages/OurTeam";
-import AdminNewProduct from "./pages/AdminNewProduct";
 import RefundPolicy from "./pages/RefundPolicy";
 import ProductsTest from "./pages/Products";
 import AdminGuard from "./components/AdminGuard";
@@ -23,6 +20,7 @@ import CheckoutCancel from "./pages/CheckoutCancel";
 import FormerDesigns from "./pages/FormerDesigns";
 import Book from "./pages/Resources";
 import BookThankYou from "./pages/BookThankYou";
+import AdminProducts from "./pages/AdminProducts";
 
 export default function App() {
   return (
@@ -46,22 +44,18 @@ export default function App() {
         <Route path="/admin/sign-in" element={<AdminSignIn />} />
 
         <Route
-          path="/admin"
+          path="/admin/products/new"
           element={
             <AdminGuard>
               <AdminDashboard />
             </AdminGuard>
           }
         />
-        {/* protect the new-product page too */}
-        <Route
-          path="/admin/products/new"
-          element={
-            <AdminGuard>
-              <AdminNewProduct />
-            </AdminGuard>
-          }
-        />
+        <Route path="/admin/products" element={<AdminGuard><AdminProducts /></AdminGuard>} />
+       
+        <Route path="/admin/products/edit/:slug" element={
+  <AdminGuard><AdminDashboard /></AdminGuard>
+} />
         {/* product pages */}
         <Route path="/products/:slug" element={<ProductDetail />} />
         <Route path="/products" element={<ProductsTest />} />

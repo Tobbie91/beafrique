@@ -7,7 +7,7 @@ export default function AdminDashboard() {
     <div>
       <AdminTopbar />
       <div className="p-6">
-        <h1 className="text-xl font-bold mb-4">Add Product</h1>
+        {/* <h1 className="text-xl font-bold mb-4">Add Product</h1> */}
         <AdminAddProduct />
       </div>
     </div>

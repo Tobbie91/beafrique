@@ -16,7 +16,7 @@ export default function AdminSignIn() {
     try {
       setBusy(true); setErr(null);
       await signInWithEmailAndPassword(auth, email, pass);
-      nav("/admin"); // your admin home
+      nav("/admin/products/new"); // your admin home
     } catch (e:any) {
       setErr(e.message || "Sign-in failed");
     } finally { setBusy(false); }

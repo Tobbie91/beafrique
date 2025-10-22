@@ -1,11 +1,9 @@
-
-
 import { Link } from "react-router-dom";
 import { Check, ChevronRight, Star } from "lucide-react";
 
 const BOOK_COVER =
   "https://res.cloudinary.com/dbl85m2kz/image/upload/v1761099321/gzlzsbsstwvfbe0nqydf.jpg"; // TODO: replace with your Cloudinary URL
-const BOOK_LINK = "https://buy.stripe.com/cNi28s0iyfbQfFxdtT4gg00"; 
+const BOOK_LINK = "https://buy.stripe.com/cNi28s0iyfbQfFxdtT4gg00";
 
 export default function Book() {
   return (
@@ -14,12 +12,16 @@ export default function Book() {
       <section className="bg-gradient-to-b from-emerald-50 to-white">
         <div className="container py-14 md:py-20 grid md:grid-cols-2 gap-10 items-center">
           <div className="order-2 md:order-1">
-            <p className="text-emerald-700 font-semibold uppercase tracking-wide text-sm">E‑book by Bukola Sowale</p>
+            <p className="text-emerald-700 font-semibold uppercase tracking-wide text-sm">
+              E‑book by Bukola Sowale
+            </p>
             <h1 className="mt-2 text-3xl md:text-4xl font-bold leading-tight">
               Make Massive Income Sewing from Home
             </h1>
             <p className="mt-4 text-gray-700 max-w-prose">
-              Practical, step‑by‑step guidance to professionalize your sewing craft, attract premium clients, and grow a sustainable business from home.
+              Practical, step‑by‑step guidance to professionalize your sewing
+              craft, attract premium clients, and grow a sustainable business
+              from home.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -41,8 +43,11 @@ export default function Book() {
 
             <div className="mt-5 flex items-center gap-3 text-sm text-gray-600">
               <div className="flex -space-x-1">
-                {[0,1,2,3,4].map(i => (
-                  <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <Star
+                    key={i}
+                    className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                  />
                 ))}
               </div>
               <span>Readers love this practical guide</span>
@@ -87,7 +92,9 @@ export default function Book() {
         <div className="container flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <p className="text-emerald-100 font-semibold">Start today</p>
-            <h3 className="text-white text-2xl font-bold">Turn your sewing skills into reliable income</h3>
+            <h3 className="text-white text-2xl font-bold">
+              Turn your sewing skills into reliable income
+            </h3>
           </div>
           <a
             href={BOOK_LINK}
@@ -105,12 +112,22 @@ export default function Book() {
         <h2 className="text-xl md:text-2xl font-bold">FAQs</h2>
         <div className="mt-4 grid gap-4">
           <details className="rounded-xl border p-4">
-            <summary className="cursor-pointer font-medium">Is it a PDF or printed book?</summary>
-            <p className="mt-2 text-gray-700">It's a downloadable PDF you can read on any device. You’ll receive the link immediately after purchase.</p>
+            <summary className="cursor-pointer font-medium">
+              Is it a PDF or printed book?
+            </summary>
+            <p className="mt-2 text-gray-700">
+              It's a downloadable PDF you can read on any device. You’ll receive
+              the link immediately after purchase.
+            </p>
           </details>
           <details className="rounded-xl border p-4">
-            <summary className="cursor-pointer font-medium">Can beginners benefit?</summary>
-            <p className="mt-2 text-gray-700">Absolutely. The steps are practical for beginners and still valuable for experienced tailors who want to earn more.</p>
+            <summary className="cursor-pointer font-medium">
+              Can beginners benefit?
+            </summary>
+            <p className="mt-2 text-gray-700">
+              Absolutely. The steps are practical for beginners and still
+              valuable for experienced tailors who want to earn more.
+            </p>
           </details>
         </div>
       </section>
@@ -126,12 +143,17 @@ export function FeaturedBook() {
   return (
     <section className="py-12 bg-emerald-50/60">
       <div className="container grid md:grid-cols-2 gap-8 items-center">
-      
         <div>
-          <p className="text-emerald-700 font-semibold uppercase tracking-wide text-xs"> E‑book</p>
-          <h3 className="text-2xl font-bold mt-1">Make Massive Income Sewing from Home</h3>
+          <p className="text-emerald-700 font-semibold uppercase tracking-wide text-xs">
+            {" "}
+            E‑book
+          </p>
+          <h3 className="text-2xl font-bold mt-1">
+            Make Massive Income Sewing from Home
+          </h3>
           <p className="text-gray-700 mt-3">
-            Learn proven steps to professionalize your sewing craft and build consistent income from home.
+            Learn proven steps to professionalize your sewing craft and build
+            consistent income from home.
           </p>
           <div className="mt-5 flex gap-3">
             <Link

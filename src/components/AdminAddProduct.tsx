@@ -1,12 +1,11 @@
 
-// components/AdminAddProduct.tsx
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { db } from "../lib/firebase";
 import {
   doc, getDoc, setDoc, serverTimestamp,
-  updateDoc, deleteDoc
 } from "firebase/firestore";
 import { uploadToCloudinary, type CloudUpload } from "../lib/cloud";
+import { useParams } from "react-router-dom";
 
 type Gender = "women" | "men" | "unisex";
 
@@ -33,29 +32,59 @@ export default function AdminAddProduct() {
   const [collection, setCollection] = useState("Be-Afrique");
   const [gender, setGender] = useState<Gender>("unisex");
   const [description, setDescription] = useState("");
-
-  // pricing (GBP)
   const [price, setPrice] = useState<number>(180); // £
   const [hasSale, setHasSale] = useState(false);
   const [compareAt, setCompareAt] = useState<number | "">("");
-
-  // variants meta (UK sizes)
   const [sizesText, setSizesText] = useState(makeUkSizeRange(8, 20).join(", "));
   const [colorsText, setColorsText] = useState("Olive");
-
-  // images
   const [main, setMain] = useState<File | null>(null);
-  const [gallery, setGallery] = useState<File[]>([]); // ← array we can edit/remove
-
-  // ux
+  const [gallery, setGallery] = useState<File[]>([]); 
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [existing, setExisting] = useState<null | { id: string }>(null);
 
-  // previews
+// file inputs need refs so we can clear the actual <input> value
+const mainInputRef = useRef<HTMLInputElement|null>(null);
+const galleryInputRef = useRef<HTMLInputElement|null>(null);
+
+function resetForm() {
+  // core
+  setSlug("");
+  setTitle("");
+  setBrand("Be-Afrique");
+  setCollection("Be-Afrique");
+  setGender("unisex");
+  setDescription("");
+  setPrice(180);
+  setHasSale(false);
+  setCompareAt("");
+  setSizesText(makeUkSizeRange(8, 20).join(", "));
+  setColorsText("Olive");
+
+  // images
+  setMain(null);
+  setGallery([]);
+
+  // UX
+  setExisting(null);
+  setMsg(null);
+  setError(null);
+
+  // Clear file input elements so they can pick the same file again
+  if (mainInputRef.current) mainInputRef.current.value = "";
+  if (galleryInputRef.current) galleryInputRef.current.value = "";
+}
+
+
   const mainPreview = useMemo(() => (main ? URL.createObjectURL(main) : ""), [main]);
   const galleryPreviews = useMemo(() => gallery.map(f => URL.createObjectURL(f)), [gallery]);
+
+  const { slug: slugParam } = useParams();
+useEffect(() => {
+  if (slugParam && slug !== slugParam) setSlug(slugParam);
+}, [slugParam]);
+
   useEffect(() => {
     return () => {
       if (mainPreview) URL.revokeObjectURL(mainPreview);
@@ -63,25 +92,45 @@ export default function AdminAddProduct() {
     };
   }, [mainPreview, galleryPreviews]);
 
-  // auto-slug
   useEffect(() => {
     if (!title) return;
     const auto = toSlug(title);
     if (!slug || slug === toSlug(slug)) setSlug(auto);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title]);
 
-  // fetch existing (to toggle Update/Editing state)
+
   useEffect(() => {
     if (!slug) return;
     let cancelled = false;
     (async () => {
       const ref = doc(db, "products", slug);
       const snap = await getDoc(ref);
-      if (!cancelled) setExisting(snap.exists() ? { id: snap.id } : null);
+      if (cancelled) return;
+  
+      if (!snap.exists()) {
+        setExisting(null);
+        return;
+      }
+  
+      const p = snap.data() as any;
+      setExisting({ id: slug });
+  
+      // Prefill fields
+      setTitle(p.title || "");
+      setBrand(p.brand || "Be-Afrique");
+      setCollection(p.collection || "Be-Afrique");
+      setDescription(p.description || "");
+      setColorsText((p.colors || []).join(", "));
+      setSizesText((p.sizes || []).join(", "));
+      setPrice(typeof p.min_price_cents === "number" ? p.min_price_cents / 100 : 180);
+      setHasSale(!!p.has_sale);
+      if (typeof p.compare_at_cents === "number") setCompareAt(p.compare_at_cents / 100);
+   
     })();
+  
     return () => { cancelled = true; };
   }, [slug]);
+  
 
   const onPickGallery = (files: FileList | null) => {
     if (!files?.length) return;
@@ -97,7 +146,7 @@ export default function AdminAddProduct() {
 
     if (!slug) return setError("Please provide a slug (e.g. linen-shirt-olive).");
     if (!title) return setError("Please provide a product title.");
-    if (!main)  return setError("Please choose a main image.");
+    if (!existing && !main) return setError("Please choose a main image.");
     if (hasSale && compareAt !== "" && Number(compareAt) <= Number(price)) {
       return setError("Compare-at must be greater than the main price when 'On sale' is checked.");
     }
@@ -105,10 +154,8 @@ export default function AdminAddProduct() {
     try {
       setBusy(true);
 
-      // 1) Upload main (keep public_id for future server-side delete)
+// @ts-ignore
       const mainUp: CloudUpload = await uploadToCloudinary(main, `${slug}/main`);
-
-      // 2) Upload gallery files (optional)
       let galleryUploads: CloudUpload[] = [];
       if (gallery.length) {
         galleryUploads = await Promise.all(
@@ -116,41 +163,67 @@ export default function AdminAddProduct() {
         );
       }
 
-      // 3) Build doc
       const sizes = parseList(sizesText);
       const colors = parseList(colorsText);
       const min_price_cents = Math.round(Number(price) * 100); // £ → pence
       const compare_at_cents = compareAt !== "" ? Math.round(Number(compareAt) * 100) : null;
 
-      const payload: any = {
-        slug,
-        title,
-        brand,
-        collection,
-        gender,
-        description,
-        min_price_cents,
-        has_sale: !!hasSale,
-        sizes,
-        colors,
-        primary_image_url: mainUp.url,
-        primary_public_id: mainUp.publicId,           // optional but useful
-        image_urls: galleryUploads.map(g => g.url),
-        gallery_public_ids: galleryUploads.map(g => g.publicId),
-        is_active: true,
-        created_at: serverTimestamp(),
-        currency: "GBP",
-      };
-      if (compare_at_cents && hasSale) payload.compare_at_cents = compare_at_cents;
+let existingDoc: any = null;
+if (existing) {
+  const ref = doc(db, "products", slug);
+  const snap = await getDoc(ref);
+  if (snap.exists()) existingDoc = snap.data();
+}
 
-      // 4) Save/Update
+
+let mainUrl = existingDoc?.primary_image_url || "";
+let mainPublicId = existingDoc?.primary_public_id || "";
+if (main) {
+  const mainUp: CloudUpload = await uploadToCloudinary(main, `${slug}/main`);
+  mainUrl = mainUp.url;
+  mainPublicId = mainUp.publicId;
+}
+
+
+let imageUrls: string[] = existingDoc?.image_urls || [];
+let galleryPublicIds: string[] = existingDoc?.gallery_public_ids || [];
+if (gallery.length) {
+  const ups = await Promise.all(gallery.map((f, i) => uploadToCloudinary(f, `${slug}/img-${(imageUrls.length) + i + 1}`)));
+  imageUrls = [...imageUrls, ...ups.map(u => u.url)];
+  galleryPublicIds = [...galleryPublicIds, ...ups.map(u => u.publicId)];
+}
+
+
+
+const payload: any = {
+  slug,
+  title,
+  brand,
+  collection,
+  gender,
+  description,
+  min_price_cents,
+  has_sale: !!hasSale,
+  sizes,
+  colors,
+  primary_image_url: mainUrl,
+  primary_public_id: mainPublicId,
+  image_urls: imageUrls,
+  gallery_public_ids: galleryPublicIds,
+  is_active: existing ? (existingDoc?.is_active ?? true) : true,
+  created_at: existing ? (existingDoc?.created_at || serverTimestamp()) : serverTimestamp(),
+  currency: "GBP",
+};
+if (compare_at_cents && hasSale) payload.compare_at_cents = compare_at_cents;
+
       await setDoc(doc(db, "products", slug), payload);
       setMsg(existing ? "Updated product!" : "Created product!");
       setExisting({ id: slug });
 
-      // Reset light bits
       setMain(null);
       setGallery([]);
+      if (mainInputRef.current) mainInputRef.current.value = "";
+      if (galleryInputRef.current) galleryInputRef.current.value = "";
     } catch (e: any) {
       setError(e?.message || "Failed to save product");
     } finally {
@@ -158,43 +231,12 @@ export default function AdminAddProduct() {
     }
   };
 
-  // SOFT DELETE (hide from site)
-  const softDelete = async () => {
-    if (!slug) return;
-    if (!confirm(`Hide "${slug}" from the catalogue?`)) return;
-    try {
-      setBusy(true); setMsg(null); setError(null);
-      await updateDoc(doc(db, "products", slug), {
-        is_active: false,
-        deleted_at: serverTimestamp(),
-      });
-      setMsg("Product hidden (soft deleted).");
-    } catch (e:any) {
-      setError(e.message || "Soft delete failed");
-    } finally { setBusy(false); }
-  };
-
-  // HARD DELETE (remove Firestore doc; images remain on Cloudinary)
-  const hardDelete = async () => {
-    if (!slug) return;
-    if (!confirm(`Permanently delete "${slug}" document? Images on Cloudinary will remain.`)) return;
-    try {
-      setBusy(true); setMsg(null); setError(null);
-      await deleteDoc(doc(db, "products", slug));
-      setMsg("Product document deleted.");
-      setExisting(null);
-      // clear fields
-      setTitle(""); setDescription(""); setMain(null); setGallery([]);
-    } catch (e:any) {
-      setError(e.message || "Hard delete failed");
-    } finally { setBusy(false); }
-  };
 
   return (
     <div className="min-h-screen w-full flex items-start md:items-center justify-center bg-gray-50 py-10">
       <form onSubmit={submit} className="space-y-6 border p-6 md:p-8 rounded-2xl max-w-3xl w-full bg-white shadow-sm mx-4">
         <header className="flex items-center justify-between">
-          <h2 className="text-xl md:text-2xl font-bold">Add / Edit Product</h2>
+          <h2 className="text-xl md:text-2xl font-bold">Add Product</h2>
           {existing && <span className="text-xs px-2 py-1 rounded bg-amber-100 text-amber-800">Editing: {existing.id}</span>}
         </header>
 
@@ -303,7 +345,12 @@ export default function AdminAddProduct() {
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm mb-2">Main image</label>
-            <input type="file" accept="image/*" onChange={e=>setMain(e.target.files?.[0]||null)} />
+            <input
+  ref={mainInputRef}
+  type="file"
+  accept="image/*"
+  onChange={e=>setMain(e.target.files?.[0]||null)}
+/>
             {mainPreview && (
               <div className="mt-2 aspect-[3/4] rounded overflow-hidden border bg-gray-50">
                 <img src={mainPreview} alt="preview" className="w-full h-full object-cover" />
@@ -312,7 +359,14 @@ export default function AdminAddProduct() {
           </div>
           <div>
             <label className="block text-sm mb-2">Gallery images (upload multiple)</label>
-            <input multiple type="file" accept="image/*" onChange={e=>onPickGallery(e.target.files)} />
+            <input
+  ref={galleryInputRef}
+  multiple
+  type="file"
+  accept="image/*"
+  onChange={e=>onPickGallery(e.target.files)}
+/>
+
             {!!galleryPreviews.length && (
               <div className="mt-2 grid grid-cols-4 gap-2">
                 {galleryPreviews.map((url, i) => (
@@ -335,34 +389,21 @@ export default function AdminAddProduct() {
         {/* Actions */}
         <div className="flex flex-wrap items-center gap-3">
           <button disabled={busy} className="px-4 py-2 bg-emerald-600 text-white rounded">
-            {busy ? "Saving…" : existing ? "Update Product" : "Add Product"}
+            {busy ? "Saving…" : "Add Product"}
           </button>
 
-          {/* Soft delete */}
-          {existing && (
-            <button type="button" disabled={busy}
-              onClick={softDelete}
-              className="px-4 py-2 rounded border border-amber-500 text-amber-700">
-              Hide (soft delete)
-            </button>
-          )}
+          <button
+    type="button"
+    disabled={busy}
+    onClick={resetForm}
+    className="px-4 py-2 rounded border"
+  >
+    Clear form
+  </button>
 
-          {/* Hard delete */}
-          {existing && (
-            <button type="button" disabled={busy}
-              onClick={hardDelete}
-              className="px-4 py-2 rounded border border-red-600 text-red-700">
-              Delete (hard)
-            </button>
-          )}
-
-          {msg && <span className="text-emerald-700 text-sm">{msg}</span>}
+           {msg && <span className="text-emerald-700 text-sm">{msg}</span>}
           {error && <span className="text-red-600 text-sm">{error}</span>}
-        </div>
-
-        <p className="text-xs text-gray-500">
-          Will save to: <code>products/{slug || "…"}</code>
-        </p>
+         </div> 
       </form>
     </div>
   );
