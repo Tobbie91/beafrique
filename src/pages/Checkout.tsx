@@ -1,127 +1,58 @@
 // src/pages/Checkout.tsx
 import { useCart } from "../store/cart";
-import { BRAND, BANK } from "../config";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { useMemo, useState } from "react";
 import { startCheckout } from "../lib/checkout";
 
+const GBP = new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" });
+const FREE_THRESHOLD = 100;   // £100
+const SHIPPING_FEE = 3.5;     // £3.50
+
 export default function Checkout() {
-  // Use the same API as Cart page: items, setQty, remove, clear
-  const { items, setQty, remove, clear } = useCart();
-
-  const CURRENCY = BRAND?.currencySymbol ?? "₦";
+  const { items, setQty, remove } = useCart();
   const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
 
-  const total = items.reduce((s, i) => s + (i.price || 0) * i.qty, 0);
+  const subtotal = useMemo(
+    () => items.reduce((s, i) => s + (i.price || 0) * i.qty, 0),
+    [items]
+  );
 
-  // Simple order id
-  const orderId = useMemo(() => {
-    const t = new Date();
-    const pad = (n: number) => String(n).padStart(2, "0");
-    return `BA-${t.getFullYear()}${pad(t.getMonth() + 1)}${pad(t.getDate())}-${pad(
-      t.getHours()
-    )}${pad(t.getMinutes())}`;
-  }, []);
-
-  // Shipping form
-  const [ship, setShip] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    address: "",
-    city: "",
-    state: "",
-  });
-  const [agree, setAgree] = useState(false);
+  // Display-only preview (Stripe still calculates the final shipping on Checkout)
+  const shipping = subtotal >= FREE_THRESHOLD ? 0 : SHIPPING_FEE;
+  const estTotal = subtotal + shipping;
 
   if (!items.length) {
     return (
       <div className="container py-12">
         <p>Your cart is empty.</p>
-        <Link to="/products" className="mt-4 inline-block px-4 py-2 rounded bg-brand text-white">
+        <Link to="/products" className="mt-4 inline-block px-4 py-2 rounded bg-emerald-600 text-white">
           Shop products
         </Link>
       </div>
     );
   }
 
-  const copy = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert("Copied!");
-    } catch {
-      alert(text);
-    }
-  };
-
-  // WhatsApp message (unchanged)
-  const waText = `Hello ${BRAND.name},
-Order ID: ${orderId}
-
-Items:
-${items
-  .map(
-    (i) =>
-      `• ${i.name ?? i.slug}${i.size ? ` (UK ${i.size})` : ""} ×${i.qty} = ${CURRENCY}${(
-        (i.price || 0) * i.qty
-      ).toLocaleString()}`
-  )
-  .join("\n")}
-
-Total: ${CURRENCY}${total.toLocaleString()}
-
-Shipping details:
-Name: ${ship.name || "-"}
-Phone: ${ship.phone || "-"}
-Email: ${ship.email || "-"}
-Address: ${ship.address || "-"}, ${ship.city || "-"}, ${ship.state || "-"}
-
-Payment method: Bank Transfer
-I'll send proof shortly.`;
-
-  // Simple validation before Stripe
-  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ship.email.trim());
-  const validForPayment =
-    ship.name.trim().length > 1 &&
-    validEmail &&
-    agree &&
-    items.every((i) => !!i.slug && i.qty > 0);
-
-  const payWithCard = async () => {
-    setErr(null);
-    if (!validForPayment) {
-      setErr("Please fill name & a valid email, and accept the terms.");
-      return;
-    }
-    try {
-      setBusy(true);
-      const payload = {
-        items: items.map(i => ({
-          slug: i.slug,
-          qty: i.qty,
-          size: i.size ?? undefined,
-          color: i.color ?? undefined,
-          amount: Math.round(Number(i.price || 0) * 100),
-          currency: "gbp",
-        })),
-        orderId,
-        email: ship.email,
-      };
-      console.log("[checkout] payload", payload);
-      await startCheckout(payload);
-    } catch (e: any) {
-      setErr(e?.message || "Could not start checkout");
-      setBusy(false);
-    }
-  };
+  async function pay() {
+    setBusy(true);
+    await startCheckout({
+      items: items.map(i => ({
+        slug: i.slug,
+        qty: i.qty,
+        size: i.size ?? undefined,
+        color: i.color ?? undefined,
+        amount: Math.round((i.price || 0) * 100),
+        currency: "gbp",
+      })),
+      // (optional) send email if you have it, else Stripe will ask
+      // email: userEmail,
+    });
+  }
 
   return (
     <div className="container py-10 grid lg:grid-cols-3 gap-8">
       <div className="lg:col-span-2">
         <h1 className="text-2xl md:text-3xl font-bold">Checkout</h1>
 
-        {/* Items */}
         <div className="mt-6 space-y-4">
           {items.map((i) => (
             <div
@@ -132,21 +63,18 @@ I'll send proof shortly.`;
                 {i.image && (
                   <img
                     src={i.image}
-                    alt={i.name || i.slug}
-                    className="h-16 w-16 rounded-lg object-cover border"
+                    alt={i.slug}
+                    className="h-16 w-16 rounded object-cover border"
                   />
                 )}
                 <div>
-                  <p className="font-medium">{i.name || i.slug}</p>
+                  <p className="font-medium">{i.title || i.slug}</p>
                   <p className="text-sm text-gray-600">
-  {i.size ? `UK ${i.size} • ` : ""}
-  {CURRENCY}{(i.price || 0).toLocaleString()}
-</p>
-
+                    {i.size ? `UK ${i.size} • ` : ""}
+                    {GBP.format(i.price || 0)}
+                  </p>
                 </div>
               </div>
-
-              {/* ✅ Use the same store API as Cart: setQty(slug, size, color, qty) */}
               <div className="flex items-center gap-3">
                 <input
                   type="number"
@@ -172,100 +100,45 @@ I'll send proof shortly.`;
             </div>
           ))}
         </div>
-
-        {/* Shipping Info */}
-        <div className="mt-8 p-6 rounded-xl border">
-          <p className="font-semibold">Shipping information</p>
-          <div className="grid sm:grid-cols-2 gap-4 mt-3">
-            <input
-              placeholder="Full name *"
-              value={ship.name}
-              onChange={(e) => setShip({ ...ship, name: e.target.value })}
-              className="border rounded-lg px-3 h-11"
-            />
-            <input
-              placeholder="Phone"
-              value={ship.phone}
-              onChange={(e) => setShip({ ...ship, phone: e.target.value })}
-              className="border rounded-lg px-3 h-11"
-            />
-            <input
-              placeholder="Email *"
-              value={ship.email}
-              onChange={(e) => setShip({ ...ship, email: e.target.value })}
-              className="border rounded-lg px-3 h-11 sm:col-span-2"
-            />
-            <input
-              placeholder="Address line"
-              value={ship.address}
-              onChange={(e) => setShip({ ...ship, address: e.target.value })}
-              className="border rounded-lg px-3 h-11 sm:col-span-2"
-            />
-            <input
-              placeholder="City"
-              value={ship.city}
-              onChange={(e) => setShip({ ...ship, city: e.target.value })}
-              className="border rounded-lg px-3 h-11"
-            />
-            <input
-              placeholder="State / County"
-              value={ship.state}
-              onChange={(e) => setShip({ ...ship, state: e.target.value })}
-              className="border rounded-lg px-3 h-11"
-            />
-          </div>
-
-          <label className="flex items-start gap-2 mt-3 text-sm">
-            <input
-              type="checkbox"
-              checked={agree}
-              onChange={(e) => setAgree(e.target.checked)}
-            />
-            <span>
-              I agree to the <Link to="/terms" className="underline">Terms</Link> &{" "}
-              <Link to="/returns" className="underline">Returns Policy</Link>.
-            </span>
-          </label>
-
-          {err && <p className="mt-3 text-sm text-red-600">{err}</p>}
-        </div>
       </div>
 
-      {/* Payment */}
       <aside className="h-fit p-6 rounded-xl border bg-white shadow-sm">
-        <div className="flex items-center justify-between">
-          <p className="font-semibold text-lg">Order summary</p>
-          <span className="text-xs bg-gray-100 px-2 py-1 rounded-full">{orderId}</span>
+        {/* Shipping rule banner */}
+        <div className="rounded-lg bg-emerald-50 text-emerald-900 text-sm p-3 mb-4">
+          <strong>Delivery:</strong> {`£${SHIPPING_FEE.toFixed(2)} for orders under £${FREE_THRESHOLD}, `}
+          <strong>free</strong> when you spend £{FREE_THRESHOLD}+.
         </div>
 
-        <div className="flex justify-between mt-2 text-sm text-gray-700">
+        <div className="flex justify-between text-sm text-gray-700">
           <span>Subtotal</span>
-          <span>{CURRENCY}{total.toLocaleString()}</span>
-        </div>
-        <div className="flex justify-between text-sm text-gray-700 mt-1">
-          <span>Shipping</span>
-          <span>Calculated at fulfillment</span>
-        </div>
-        <div className="border-t mt-3 pt-3 flex justify-between font-semibold">
-          <span>Total</span>
-          <span>{CURRENCY}{total.toLocaleString()}</span>
+          <span>{GBP.format(subtotal)}</span>
         </div>
 
-        {/* Stripe */}
+        <div className="flex justify-between text-sm text-gray-700 mt-1">
+          <span>Delivery</span>
+          <span className={shipping === 0 ? "text-emerald-700 font-medium" : ""}>
+            {shipping === 0 ? "Free" : GBP.format(shipping)}
+          </span>
+        </div>
+
+        <div className="border-t mt-3 pt-3 flex justify-between font-semibold">
+          <span>Estimated total</span>
+          <span>{GBP.format(estTotal)}</span>
+        </div>
+
+        <p className="mt-2 text-[12px] text-gray-500">
+          Final delivery cost is applied in Stripe Checkout based on these rules.
+        </p>
+
         <button
-          onClick={payWithCard}
+          onClick={pay}
           disabled={busy}
           className={`mt-6 w-full rounded-lg px-5 py-3 text-white ${
             busy ? "bg-emerald-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-700"
           }`}
         >
-          {busy ? "Redirecting…" : "Pay with Card (Secure)"}
+          {busy ? "Redirecting…" : "Pay securely"}
         </button>
-
-    
-        <p className="mt-4 text-xs text-gray-500">
-          Card payments are processed securely by Stripe. Your items are reserved for 24h for bank transfers.
-        </p>
       </aside>
     </div>
   );

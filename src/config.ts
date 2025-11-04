@@ -14,7 +14,7 @@ export const BRAND: BrandConfig = {
   name: "Be Afrique",
   whatsapp: "447733729418",
   email: "Bukonla@beafrique.com",
-  phone: "+44 7733 729 418",
+  phone: "+447733729418",
   address: "24 Jubilee Road, Southsea, Portsmouth PO4 0JE, United Kingdom",
   currencySymbol: "£",      // ← add this to silence TS2339
   currencyCode: "GBP",

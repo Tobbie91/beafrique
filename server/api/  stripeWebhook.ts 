@@ -29,6 +29,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         payment_status: session.payment_status,
         customer_email: session.customer_details?.email || null,
         created_at: new Date(),
+        shipping_details: session.shipping_details || null,
+  shipping_amount: session.total_details?.amount_shipping ?? 0,
+  customer_details: session.customer_details || null,
         line_items: (full.line_items?.data || []).map(li => ({
           description: li.description,
           qty: li.quantity,

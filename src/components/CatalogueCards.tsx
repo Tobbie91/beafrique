@@ -1,7 +1,8 @@
+
 import { Link } from "react-router-dom";
-import { MessageCircle } from "lucide-react";
 import type { Product } from "../data/products";
 import { BRAND } from "../config";
+import { MessageCircle } from "lucide-react";
 
 type Props = {
   items: Product[];
@@ -10,66 +11,65 @@ type Props = {
 
 export default function CatalogueCards({ items, getOutsideLink }: Props) {
   return (
-    <div className="grid gap-8 md:grid-cols-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
       {items.map((p) => {
         const outside = getOutsideLink?.(p);
-        const waText = encodeURIComponent(
-          `Hello ${BRAND.name}, I'm interested in ${p.name}.`
-        );
+        const waText = encodeURIComponent(`Hello ${BRAND.name}, I'm interested in ${p.name}.`);
 
         return (
           <article
             key={p.slug}
-            className="rounded-2xl overflow-hidden bg-emerald-900 ring-1 ring-emerald-900 shadow-sm flex flex-col"
+            className="rounded-xl overflow-hidden bg-white ring-1 ring-gray-200 shadow-sm hover:shadow-md transition"
           >
             {/* Image */}
             <Link to={`/products/${p.slug}`} className="block">
               <img
                 src={p.image}
                 alt={p.name}
-                className="w-full aspect-[4/5] object-cover"
+                className="w-full aspect-[3/4] object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </Link>
 
-            {/* Title bar (same emerald, yellow accent) */}
-            {/* Bottom panel (emerald all through) */}
-            <div className="p-5 text-emerald-50">
-              {/* UK store CTA pill (centered) */}
-              <div className="flex justify-center">
+            {/* Content — minimal, mostly white */}
+            <div className="p-3 md:p-4">
+              <h3 className="text-sm md:text-[15px] font-medium text-gray-900 line-clamp-2 min-h-[2.5rem]">
+                {p.name}
+              </h3>
+
+              <div className="mt-3 flex items-center gap-2">
                 {outside ? (
                   <a
                     href={outside}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition bg-yellow-300 hover:bg-yellow-400 text-emerald-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-200"
+                    className="inline-flex items-center justify-center rounded-full px-3 py-1.5 text-xs font-semibold border border-emerald-600 text-emerald-700 hover:bg-emerald-50"
                   >
-                    Buy from our UK store
+                    View in UK store
                   </a>
                 ) : (
                   <Link
                     to={`/products/${p.slug}`}
-                    className="inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition bg-emerald-50 text-emerald-900 ring-1 ring-emerald-200 hover:bg-yellow-300 hover:text-emerald-900 hover:ring-transparent focus:outline-none focus:ring-2 focus:ring-yellow-200"
+                    className="inline-flex items-center justify-center rounded-full px-3 py-1.5 text-xs font-semibold border border-gray-300 text-gray-800 hover:bg-gray-50 text-[8px] md:text-sm lg:text-sm"
                   >
-                    Buy from our UK store
+                    View details
                   </Link>
                 )}
-              </div>
 
-              {/* Optional tiny note under CTA */}
-              <p className="mt-2 text-xs text-emerald-200 text-center">
-                {/* Ships from Portsmouth, United Kingdom */}
-              </p>
-
-              {/* WhatsApp round button */}
-              <div className="mt-4 flex justify-center">
+                {/* Subtle WhatsApp icon-only on mobile; label on md+ */}
                 <a
                   href={`https://wa.me/${BRAND.whatsapp}?text=${waText}`}
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Chat on WhatsApp"
-                  className="h-12 w-12 grid place-items-center rounded-full bg-white text-emerald-900 shadow-sm hover:bg-yellow-400 transition"
+                  className="ml-auto inline-flex items-center gap-1.5 text-emerald-700 hover:text-emerald-800"
+                  title="Chat on WhatsApp"
                 >
-                  <MessageCircle className="w-5 h-5" />
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-emerald-200">
+                    <MessageCircle className="h-4 w-4" />
+                  </span>
+                  <span className="hidden md:inline text-xs font-medium">Ask</span>
                 </a>
               </div>
             </div>

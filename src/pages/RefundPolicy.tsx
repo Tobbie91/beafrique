@@ -120,7 +120,7 @@ export default function RefundPolicy() {
               <p>
                 WhatsApp:{" "}
                 <a href="https://wa.me/447733729418" className="underline hover:no-underline">
-                  +44 7733 729 418
+                +447733729418
                 </a>
               </p>
               <p>
