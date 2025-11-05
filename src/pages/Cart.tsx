@@ -1,25 +1,31 @@
 // src/pages/Cart.tsx
 import { useCart } from "../store/cart";
 import { startCheckout } from "../lib/checkout";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function CartPage() {
   const { items, setQty, remove, clear } = useCart();
+  const [busy, setBusy] = useState(false);
 
   const hasItems = items.length > 0;
-  // Display total from client data just for UX; real price will come from server
-  // (Optionally you can fetch product docs here to compute an accurate preview total)
 
-  const checkout = () => {
+  const checkout = async () => {
     if (!hasItems) return;
-    startCheckout({
-      items: items.map(i => ({
-        slug: i.slug,
-        qty: i.qty,
-        size: i.size ?? undefined,
-        color: i.color ?? undefined,
-      })),
-    });
+    setBusy(true);
+    try {
+      await startCheckout({
+        items: items.map((i) => ({
+          slug: i.slug,
+          qty: i.qty,
+          size: i.size ?? undefined,
+          color: i.color ?? undefined,
+          amount: Math.round((i.price || 0) * 100), // use price in minor units
+          currency: (i.currency || "gbp").toLowerCase(),
+        })),
+      });
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -32,9 +38,18 @@ export default function CartPage() {
         <>
           <ul className="divide-y border rounded-2xl bg-white">
             {items.map((i) => (
-              <li key={`${i.slug}-${i.size}-${i.color}`} className="p-4 flex gap-4 items-center">
+              <li
+                key={`${i.slug}-${i.size}-${i.color}`}
+                className="p-4 flex gap-4 items-center"
+              >
                 <div className="w-20 h-24 bg-gray-100 rounded overflow-hidden">
-                  {i.image ? <img src={i.image} className="w-full h-full object-cover" /> : null}
+                  {i.image ? (
+                    <img
+                      src={i.image}
+                      className="w-full h-full object-cover"
+                      alt={i.title || i.slug}
+                    />
+                  ) : null}
                 </div>
                 <div className="flex-1">
                   <div className="font-semibold">{i.title || i.slug}</div>
@@ -44,25 +59,76 @@ export default function CartPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="px-2 py-1 border rounded" onClick={() => setQty(i.slug, i.size ?? null, i.color ?? null, Math.max(1, i.qty - 1))}>-</button>
-                  <input className="w-12 text-center border rounded py-1"
-                         value={i.qty}
-                         onChange={e=> setQty(i.slug, i.size ?? null, i.color ?? null, Math.max(1, parseInt(e.target.value||"1",10)))}/>
-                  <button className="px-2 py-1 border rounded" onClick={() => setQty(i.slug, i.size ?? null, i.color ?? null, i.qty + 1)}>+</button>
+                  <button
+                    className="px-2 py-1 border rounded"
+                    onClick={() =>
+                      setQty(
+                        i.slug,
+                        i.size ?? null,
+                        i.color ?? null,
+                        Math.max(1, i.qty - 1)
+                      )
+                    }
+                  >
+                    -
+                  </button>
+                  <input
+                    className="w-12 text-center border rounded py-1"
+                    value={i.qty}
+                    onChange={(e) =>
+                      setQty(
+                        i.slug,
+                        i.size ?? null,
+                        i.color ?? null,
+                        Math.max(
+                          1,
+                          parseInt(e.target.value || "1", 10)
+                        )
+                      )
+                    }
+                  />
+                  <button
+                    className="px-2 py-1 border rounded"
+                    onClick={() =>
+                      setQty(
+                        i.slug,
+                        i.size ?? null,
+                        i.color ?? null,
+                        i.qty + 1
+                      )
+                    }
+                  >
+                    +
+                  </button>
                 </div>
-                <button className="ml-4 text-red-600 text-sm" onClick={() => remove(i.slug, i.size ?? null, i.color ?? null)}>Remove</button>
+                <button
+                  className="ml-4 text-red-600 text-sm"
+                  onClick={() =>
+                    remove(i.slug, i.size ?? null, i.color ?? null)
+                  }
+                >
+                  Remove
+                </button>
               </li>
             ))}
           </ul>
 
           <div className="mt-6 flex gap-3">
-            {/* <button onClick={checkout} className="px-5 py-3 rounded bg-emerald-600 text-white">
-              Checkout
-            </button> */}
-             <Link to="/checkout" className="px-5 py-3 rounded bg-emerald-600 text-white">
-              Checkout
-            </Link>
-            <button onClick={clear} className="px-5 py-3 rounded border">
+            <button
+              onClick={checkout}
+              disabled={busy}
+              className={`px-5 py-3 rounded text-white ${
+                busy
+                  ? "bg-emerald-400 cursor-not-allowed"
+                  : "bg-emerald-600 hover:bg-emerald-700"
+              }`}
+            >
+              {busy ? "Redirecting…" : "Checkout"}
+            </button>
+            <button
+              onClick={clear}
+              className="px-5 py-3 rounded border hover:bg-gray-50"
+            >
               Clear cart
             </button>
           </div>
