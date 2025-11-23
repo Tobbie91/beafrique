@@ -24,9 +24,9 @@ export default function HomeCatalogueTeaser() {
     <section className="py-14">
       <div className="container">
         <div className="text-center">
-          <p className="text-emerald-700 text-sm font-semibold tracking-wide">
+          {/* <p className="text-emerald-700 text-sm font-semibold tracking-wide">
             Designed by women for women
-          </p>
+          </p> */}
           <h2 className="text-3xl md:text-4xl font-bold mt-1 text-emerald-900">
             New & Popular
           </h2>

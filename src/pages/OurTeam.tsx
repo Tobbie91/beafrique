@@ -57,7 +57,7 @@ export default function OurTeam() {
               People who stitch culture into every seam
             </h1>
             <p className="mt-3 text-sm md:text-base text-emerald-100/90">
-              A small, mighty team crafting conscious fashion rooted in African
+              A small, mighty team crafting Purposeful Fashion rooted in African
               heritage and designed for the planet.
             </p>
           </div>

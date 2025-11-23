@@ -31,7 +31,7 @@ export default function WhatWeDo() {
               What we do
             </span>
             <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
-              Conscious fashion services,crafted with care
+            Purposeful fashion services, crafted with care
             </h1>
             <p className="mt-3 text-sm md:text-base text-emerald-100/90">
               From ready-to-wear and bespoke fittings to corporate styling and education, we design

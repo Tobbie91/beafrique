@@ -41,7 +41,7 @@ export default function Footer() {
                 <span className="text-yellow-400">Be</span> Afrique Limited
               </p>
               <p className="mt-1 text-sm text-emerald-100/80">
-                Conscious fashion. Empowering women. Celebrating African heritage.
+              Purposeful Fashion. Empowering women. Celebrating African heritage.
               </p>
             </div>
           </div>
@@ -83,19 +83,19 @@ export default function Footer() {
         {/* Middle grid */}
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           {/* About */}
-          <div>
+          {/* <div>
             <h4 className="text-sm font-semibold tracking-wide text-yellow-300">About</h4>
             <p className="mt-3 text-sm leading-relaxed text-emerald-50/90">
               We are a purpose driven fashion brand focused on environmental consciousness and social
               impact. We empower women with unique, expressive pieces, fostering independence and growth.
             </p>
-          </div>
+          </div> */}
 
           {/* Quick Links */}
           <div>
             <h4 className="text-sm font-semibold tracking-wide text-yellow-300">Quick Links</h4>
             <ul className="mt-3 space-y-2 text-sm">
-              <li><Link to="/catalogue" className="hover:text-yellow-300">Conscious Fashion</Link></li>
+              <li><Link to="/catalogue" className="hover:text-yellow-300">Purposeful Fashion</Link></li>
               <li><Link to="/about" className="hover:text-yellow-300"> About Us</Link></li>
               <li><Link to="/client" className="hover:text-yellow-300">The Journey</Link></li>
               <li><Link to="/what-we-do" className="hover:text-yellow-300">What We Do</Link></li>
@@ -108,7 +108,7 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold tracking-wide text-yellow-300">Contact</h4>
             <ul className="mt-3 space-y-2 text-sm">
-              <li>Phone: <a href="tel:+2348063328191" className="hover:text-yellow-300">+234 806 332 8191</a></li>
+              <li>Phone: <a href="tel:+2348063328191" className="hover:text-yellow-300">+447733729418</a></li>
               <li>Email: <a href="mailto:Bukonla@beafrique.com" className="hover:text-yellow-300">bukonla@beafrique.com</a></li>
               <li>Opening Hours: Mon–Sat (08:00–18:00), Sun Closed</li>
               {/* <li>

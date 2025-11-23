@@ -12,7 +12,7 @@ export default function About() {
                 About Be Afrique
               </span>
               <h1 className="mt-4 text-3xl md:text-5xl font-bold leading-tight tracking-tight">
-                Conscious fashion, rooted in heritage.
+              Purposeful Fashion, rooted in heritage.
               </h1>
               <p className="mt-3 text-sm md:text-base text-emerald-100/90 max-w-xl">
                 We create sustainable ready to wear that celebrates African identity, empowers women,
@@ -25,7 +25,7 @@ export default function About() {
                 <img src={Image} alt="Be Afrique" className="h-full w-full object-cover" />
               </div>
               <div className="absolute -top-3 -right-3 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-emerald-900 shadow">
-                Since 2022
+                Since 2024
               </div>
             </div>
           </div>
@@ -107,10 +107,10 @@ export default function About() {
               <div className="inline-flex items-center gap-2 rounded-full bg-yellow-400 px-3 py-1 text-xs font-semibold text-emerald-900 ring-1 ring-yellow-300">
                 🌍 Vision
               </div>
-              <h3 className="mt-4 text-2xl font-bold text-emerald-900">Bridging cultures through conscious fashion.</h3>
+              <h3 className="mt-4 text-2xl font-bold text-emerald-900">Bridging cultures through purposeful Fashion.</h3>
               <div className="mt-2 flex flex-wrap gap-2">
                 <span className="inline-flex rounded-full bg-yellow-100 text-emerald-900 px-3 py-1 text-[11px] font-semibold ring-1 ring-yellow-200">
-                  “Bridging cultures through conscious fashion.”
+                  “Bridging cultures through purposeful Fashion.”
                 </span>
                 <span className="inline-flex rounded-full bg-yellow-100 text-emerald-900 px-3 py-1 text-[11px] font-semibold ring-1 ring-yellow-200">
                   “Where African heritage meets sustainable living.”
@@ -175,9 +175,9 @@ export default function About() {
         <div className="container">
           <div className="grid grid-cols-3 gap-4">
             {[
-              { label: "Years in Business", value: "3+" },
-              { label: "Women Empowered", value: "2,000+" },
-              { label: "Reviews", value: "65+" },
+              // { label: "Years in Business", value: "3+" },
+              { label: "Women Empowered", value: "100+" },
+              { label: "Reviews", value: "25+" },
             ].map((s) => (
               <div key={s.label} className="rounded-2xl bg-white ring-1 ring-gray-200 p-5 text-center">
                 <p className="text-3xl font-bold text-emerald-900">{s.value}</p>

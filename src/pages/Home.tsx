@@ -195,15 +195,14 @@ export default function Home() {
               We create eco-friendly ready-to-wear that celebrates heritage, empowers women, and inspires pride in identity.
             </p>
             <p className="text-base md:text-lg text-gray-600">
-              By combining ethical practices with innovative solutions, we promote sustainability while addressing women’s
-              unemployment through skills and opportunity.
+            We merge responsible methods with cutting-edge ideas to strengthen sustainability and equip women with skills that open doors to employment.
             </p>
 
             <div className="grid grid-cols-3 gap-4 mt-8">
               {[
-                { label: "Years in Business", value: "3" },
-                { label: "Reviews", value: "65" },
-                { label: "Women Empowered", value: "2000" },
+                // { label: "Years in Business", value: "3" },
+                { label: "Reviews", value: "25" },
+                { label: "Women Empowered", value: "100" },
               ].map((s) => (
                 <div key={s.label} className="rounded-xl border border-gray-200 p-4 text-center">
                   <p className="text-3xl font-bold text-emerald-800">{s.value}</p>
