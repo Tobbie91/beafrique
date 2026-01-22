@@ -37,8 +37,9 @@ export default function AdminAddProduct() {
   const [compareAt, setCompareAt] = useState<number | "">("");
   const [sizesText, setSizesText] = useState(makeUkSizeRange(8, 20).join(", "));
   const [colorsText, setColorsText] = useState("Olive");
+  const [variants, setVariants] = useState<Array<{size: string; color: string; stock: number}>>([]);
   const [main, setMain] = useState<File | null>(null);
-  const [gallery, setGallery] = useState<File[]>([]); 
+  const [gallery, setGallery] = useState<File[]>([]);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -61,6 +62,7 @@ function resetForm() {
   setCompareAt("");
   setSizesText(makeUkSizeRange(8, 20).join(", "));
   setColorsText("Olive");
+  setVariants([]);
 
   // images
   setMain(null);
@@ -98,6 +100,32 @@ useEffect(() => {
     if (!slug || slug === toSlug(slug)) setSlug(auto);
   }, [title]);
 
+  // Auto-generate variants when sizes/colors change
+  useEffect(() => {
+    const sizes = parseList(sizesText);
+    const colors = parseList(colorsText);
+
+    if (!sizes.length || !colors.length) return;
+
+    setVariants(prev => {
+      const newVariants: Array<{size: string; color: string; stock: number}> = [];
+
+      for (const size of sizes) {
+        for (const color of colors) {
+          // Check if this combination already exists
+          const existing = prev.find(v => v.size === size && v.color === color);
+          newVariants.push({
+            size,
+            color,
+            stock: existing?.stock ?? 10 // Default stock is 10
+          });
+        }
+      }
+
+      return newVariants;
+    });
+  }, [sizesText, colorsText]);
+
 
   useEffect(() => {
     if (!slug) return;
@@ -125,7 +153,8 @@ useEffect(() => {
       setPrice(typeof p.min_price_cents === "number" ? p.min_price_cents / 100 : 180);
       setHasSale(!!p.has_sale);
       if (typeof p.compare_at_cents === "number") setCompareAt(p.compare_at_cents / 100);
-   
+      if (p.variants && Array.isArray(p.variants)) setVariants(p.variants);
+
     })();
   
     return () => { cancelled = true; };
@@ -206,6 +235,7 @@ const payload: any = {
   has_sale: !!hasSale,
   sizes,
   colors,
+  variants,
   primary_image_url: mainUrl,
   primary_public_id: mainPublicId,
   image_urls: imageUrls,
@@ -405,17 +435,94 @@ if (compare_at_cents && hasSale) payload.compare_at_cents = compare_at_cents;
                 <p className="text-xs text-gray-500 mt-1">CSV or new lines.</p>
               </div>
               <div>
-                <label className="block text-sm mb-1">Colors</label>
+                <div className="flex items-center justify-between">
+                  <label className="block text-sm mb-1">Colors</label>
+                  <button
+                    type="button"
+                    className="text-[11px] px-2 py-1 rounded border bg-white hover:bg-gray-50"
+                    onClick={() => {
+                      const popular = "black, burgundy, navy, emerald, cream, gold";
+                      if (!colorsText.trim()) setColorsText(popular);
+                    }}
+                  >
+                    Popular colors
+                  </button>
+                </div>
                 <textarea
                   className="w-full border rounded px-3 py-2 min-h-[70px]"
                   value={colorsText}
                   onChange={e=>setColorsText(e.target.value)}
-                  placeholder="Olive, Black, Purple Ankara"
+                  placeholder="black, burgundy, navy, emerald, cream"
                 />
-                <p className="text-xs text-gray-500 mt-1">CSV or new lines.</p>
+                <details className="text-xs text-gray-500 mt-1">
+                  <summary className="cursor-pointer hover:text-gray-700">CSV or new lines. Click for color examples</summary>
+                  <div className="mt-2 p-2 bg-gray-50 rounded text-[11px] leading-relaxed">
+                    <strong>Popular:</strong> black, white, navy, burgundy, wine, emerald, olive, cream, beige, nude, champagne, gold<br/>
+                    <strong>Reds:</strong> red, crimson, maroon, wine, burgundy<br/>
+                    <strong>Pinks:</strong> pink, rose, blush, coral, salmon<br/>
+                    <strong>Blues:</strong> navy, royal, sky, denim, azure, indigo, turquoise<br/>
+                    <strong>Greens:</strong> emerald, forest, olive, sage, mint, jade, teal<br/>
+                    <strong>Browns:</strong> brown, tan, camel, chocolate, coffee, khaki<br/>
+                    <strong>Neutrals:</strong> gray, silver, charcoal, slate, stone, ash, pearl<br/>
+                    <strong>Purples:</strong> purple, violet, lavender, plum, lilac<br/>
+                    <strong>Others:</strong> orange, rust, terracotta, yellow, mustard, copper, bronze
+                  </div>
+                </details>
               </div>
             </div>
           </section>
+
+          {/* VARIANTS & STOCK */}
+          {variants.length > 0 && (
+            <section className="rounded-2xl bg-white border shadow-sm">
+              <div className="p-5 border-b">
+                <h2 className="text-base md:text-lg font-semibold">Stock Management</h2>
+                <p className="text-xs text-gray-500 mt-1">Set stock quantity for each size/color combination.</p>
+              </div>
+              <div className="p-5">
+                <div className="grid gap-2 max-h-96 overflow-y-auto">
+                  {variants.map((variant, idx) => (
+                    <div key={`${variant.size}-${variant.color}`} className="grid grid-cols-[1fr_1fr_100px] gap-3 items-center p-3 border rounded">
+                      <div className="text-sm">
+                        <span className="font-medium">Size:</span> {variant.size}
+                      </div>
+                      <div className="text-sm">
+                        <span className="font-medium">Color:</span> {variant.color}
+                      </div>
+                      <input
+                        type="number"
+                        min="0"
+                        className="h-9 border rounded px-2 text-sm"
+                        value={variant.stock}
+                        onChange={(e) => {
+                          const newVariants = [...variants];
+                          newVariants[idx].stock = parseInt(e.target.value) || 0;
+                          setVariants(newVariants);
+                        }}
+                        placeholder="Stock"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <button
+                    type="button"
+                    className="text-xs px-3 py-1.5 rounded border bg-white hover:bg-gray-50"
+                    onClick={() => setVariants(prev => prev.map(v => ({...v, stock: 10})))}
+                  >
+                    Set all to 10
+                  </button>
+                  <button
+                    type="button"
+                    className="text-xs px-3 py-1.5 rounded border bg-white hover:bg-gray-50"
+                    onClick={() => setVariants(prev => prev.map(v => ({...v, stock: 0})))}
+                  >
+                    Set all to 0 (sold out)
+                  </button>
+                </div>
+              </div>
+            </section>
+          )}
 
           {/* IMAGES */}
           <section className="rounded-2xl bg-white border shadow-sm">

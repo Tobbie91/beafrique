@@ -43,10 +43,15 @@ async function buildLineItem(raw, idx) {
         product_data: {
           name: slug.replace(/-/g, " "),
           metadata: {
-            slug,
+            productSlug: slug,
             size: raw?.size ? String(raw.size) : "",
             color: raw?.color ? String(raw.color) : "",
           },
+        },
+        metadata: {
+          productSlug: slug,
+          size: raw?.size ? String(raw.size) : "",
+          color: raw?.color ? String(raw.color) : "",
         },
       },
     };
@@ -61,10 +66,15 @@ async function buildLineItem(raw, idx) {
         product_data: {
           name: slug.replace(/-/g, " "),
           metadata: {
-            slug,
+            productSlug: slug,
             size: raw?.size ? String(raw.size) : "",
             color: raw?.color ? String(raw.color) : "",
           },
+        },
+        metadata: {
+          productSlug: slug,
+          size: raw?.size ? String(raw.size) : "",
+          color: raw?.color ? String(raw.color) : "",
         },
       },
     };

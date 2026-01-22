@@ -38,18 +38,88 @@ type Product = {
 };
 
 const NAMED_HEX: Record<string, string> = {
+  // Basic Colors
   black: "#000000",
   white: "#ffffff",
-  olive: "#556B2F",
-  green: "#008000",
+  gray: "#6b7280",
+  grey: "#6b7280",
+  silver: "#c0c0c0",
+
+  // Reds & Pinks
   red: "#cc0000",
+  crimson: "#dc143c",
+  maroon: "#800000",
+  burgundy: "#800020",
+  wine: "#722f37",
+  pink: "#ffc0cb",
+  rose: "#ff007f",
+  coral: "#ff7f50",
+  salmon: "#fa8072",
+  blush: "#de5d83",
+
+  // Oranges & Yellows
+  orange: "#ff8c00",
+  rust: "#b7410e",
+  terracotta: "#e2725b",
+  yellow: "#ffd700",
+  mustard: "#ffdb58",
+  gold: "#d4af37",
+  amber: "#ffbf00",
+
+  // Greens
+  green: "#008000",
+  olive: "#556b2f",
+  emerald: "#50c878",
+  forest: "#228b22",
+  lime: "#00ff00",
+  mint: "#98ff98",
+  sage: "#9dc183",
+  teal: "#008080",
+  jade: "#00a86b",
+
+  // Blues
   blue: "#1e40af",
   navy: "#001f3f",
-  brown: "#6b4423",
-  beige: "#f5f5dc",
-  gold: "#d4af37",
-  cream: "#f1eadb",
+  royal: "#4169e1",
+  sky: "#87ceeb",
+  turquoise: "#40e0d0",
+  cyan: "#00ffff",
+  azure: "#007fff",
+  indigo: "#4b0082",
+  denim: "#1560bd",
+
+  // Purples
   purple: "#6b21a8",
+  violet: "#8f00ff",
+  lavender: "#e6e6fa",
+  plum: "#8e4585",
+  mauve: "#e0b0ff",
+  lilac: "#c8a2c8",
+
+  // Browns & Neutrals
+  brown: "#6b4423",
+  tan: "#d2b48c",
+  taupe: "#483c32",
+  chocolate: "#7b3f00",
+  coffee: "#6f4e37",
+  camel: "#c19a6b",
+  khaki: "#c3b091",
+  beige: "#f5f5dc",
+  cream: "#f1eadb",
+  ivory: "#fffff0",
+  nude: "#e3bc9a",
+  sand: "#c2b280",
+
+  // Specialty Colors
+  charcoal: "#36454f",
+  slate: "#708090",
+  stone: "#928e85",
+  ash: "#b2beb5",
+  pearl: "#eae0c8",
+  champagne: "#f7e7ce",
+  copper: "#b87333",
+  bronze: "#cd7f32",
+  metallic: "#a8a9ad",
 };
 
 function toHex(name?: string) {
@@ -90,7 +160,10 @@ export default function ProductDetail() {
   const unitPrice =
     (activeVariant?.price_cents ?? product?.min_price_cents ?? 0) / 100;
 
+  const isOutOfStock = activeVariant ? activeVariant.stock <= 0 : false;
+
   function handleAddToCart() {
+    if (isOutOfStock) return;
     add({
       slug,
       qty: 1,
@@ -327,10 +400,26 @@ export default function ProductDetail() {
           </div>
         )}
 
+        {/* Stock indicator */}
+        {activeVariant && (
+          <div className="mt-4">
+            {isOutOfStock ? (
+              <span className="text-red-600 font-medium">Out of stock</span>
+            ) : activeVariant.stock < 5 ? (
+              <span className="text-amber-600 font-medium">
+                Only {activeVariant.stock} left in stock
+              </span>
+            ) : (
+              <span className="text-emerald-600 font-medium">In stock</span>
+            )}
+          </div>
+        )}
+
         <div className="mt-8 flex gap-3">
           <button
-            disabled={busy}
+            disabled={busy || isOutOfStock}
             onClick={async () => {
+              if (isOutOfStock) return;
               setBusy(true);
               try {
                 await startCheckout({
@@ -338,8 +427,8 @@ export default function ProductDetail() {
                     {
                       slug,
                       qty: 1,
-                      // size,
-                      // color,
+                      size: activeVariant?.size || "",
+                      color: activeVariant?.color || "",
                       amount: Math.round(unitPrice * 100),
                       currency: (product?.currency || "GBP").toLowerCase(),
                     },
@@ -350,20 +439,26 @@ export default function ProductDetail() {
               }
             }}
             className={`px-4 py-2 rounded text-white ${
-              busy
+              isOutOfStock
+                ? "bg-gray-400 cursor-not-allowed"
+                : busy
                 ? "bg-emerald-400 cursor-not-allowed"
                 : "bg-emerald-600 hover:bg-emerald-700"
             }`}
           >
-            {busy ? "Redirecting…" : "Buy now"}
+            {isOutOfStock ? "Sold out" : busy ? "Redirecting…" : "Buy now"}
           </button>
-          <Link
-            to="/cart"
+          <button
+            disabled={isOutOfStock}
             onClick={handleAddToCart}
-            className="px-4 py-2 rounded border"
+            className={`px-4 py-2 rounded border ${
+              isOutOfStock
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-300"
+                : "hover:bg-gray-50"
+            }`}
           >
-            Add to cart
-          </Link>
+            {isOutOfStock ? "Out of stock" : "Add to cart"}
+          </button>
         </div>
       </div>
     </div>
