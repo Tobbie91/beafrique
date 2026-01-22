@@ -2,12 +2,12 @@
 
 export type BrandConfig = {
   name: string;
-  whatsapp: string;   // digits only for wa.me
+  whatsapp: string; 
   email: string;
-  phone: string;      // display version
+  phone: string;  
   address: string;
-  currencySymbol?: string; // ← optional
-  currencyCode?: string;   // ← optional (e.g., "GBP")
+  currencySymbol?: string;
+  currencyCode?: string;  
 };
 
 export const BRAND: BrandConfig = {
@@ -16,7 +16,7 @@ export const BRAND: BrandConfig = {
   email: "Bukonla@beafrique.com",
   phone: "+447733729418",
   address: "24 Jubilee Road, Southsea, Portsmouth PO4 0JE, United Kingdom",
-  currencySymbol: "£",      // ← add this to silence TS2339
+  currencySymbol: "£",     
   currencyCode: "GBP",
 };
 
@@ -25,9 +25,9 @@ export type BankConfig = {
   bankName: string;
   accountName: string;
   accountNumber: string;
-  sortCode?: string;   // ✅ UK needs this
-  iban?: string;       // optional (international)
-  bic?: string;        // optional (international)
+  sortCode?: string; 
+  iban?: string;      
+  bic?: string;       
   note?: string;
 };
 

@@ -22,7 +22,7 @@ export default function CatalogueCards({ items, getOutsideLink }: Props) {
             className="rounded-xl overflow-hidden bg-white ring-1 ring-gray-200 shadow-sm hover:shadow-md transition"
           >
             {/* Image */}
-            <Link to={`/products/${p.slug}`} className="block">
+            <Link to={`/products/${p.slug}`} className="block relative">
               <img
                 src={p.image}
                 alt={p.name}
@@ -30,6 +30,14 @@ export default function CatalogueCards({ items, getOutsideLink }: Props) {
                 loading="lazy"
                 decoding="async"
               />
+              {/* @ts-ignore */}
+              {p.isOutOfStock && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <span className="bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm">
+                    SOLD OUT
+                  </span>
+                </div>
+              )}
             </Link>
 
             {/* Content — minimal, mostly white */}

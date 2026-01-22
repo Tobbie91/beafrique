@@ -21,6 +21,10 @@ import FormerDesigns from "./pages/FormerDesigns";
 import Book from "./pages/Resources";
 import BookThankYou from "./pages/BookThankYou";
 import AdminProducts from "./pages/AdminProducts";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import AdminBlogs from "./pages/AdminBlogs";
+import AdminAddBlog from "./pages/AdminAddBlog";
 
 export default function App() {
   return (
@@ -41,6 +45,10 @@ export default function App() {
         <Route path="/resources" element={<Book />} />
         <Route path="/book/thank-you" element={<BookThankYou />} />
 
+        {/* Blog pages */}
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
+
         <Route path="/admin/sign-in" element={<AdminSignIn />} />
 
         <Route
@@ -52,10 +60,12 @@ export default function App() {
           }
         />
         <Route path="/admin/products" element={<AdminGuard><AdminProducts /></AdminGuard>} />
-       
-        <Route path="/admin/products/edit/:slug" element={
-  <AdminGuard><AdminDashboard /></AdminGuard>
-} />
+        <Route path="/admin/products/edit/:slug" element={<AdminGuard><AdminDashboard /></AdminGuard>} />
+
+        {/* Admin blog routes */}
+        <Route path="/admin/blogs" element={<AdminGuard><AdminBlogs /></AdminGuard>} />
+        <Route path="/admin/blogs/new" element={<AdminGuard><AdminAddBlog /></AdminGuard>} />
+        <Route path="/admin/blogs/edit/:slug" element={<AdminGuard><AdminAddBlog /></AdminGuard>} />
         {/* product pages */}
         <Route path="/products/:slug" element={<ProductDetail />} />
         <Route path="/products" element={<ProductsTest />} />

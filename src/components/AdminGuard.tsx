@@ -30,13 +30,24 @@ export function AdminTopbar() {
           >
             + Add product
           </NavLink>
+          <NavLink
+            to="/admin/blogs"
+            className={({ isActive }) =>
+              `${linkBase} ${isActive ? active : inactive}`
+            }
+          >
+            Blog Posts
+          </NavLink>
         </nav>
       </div>
 
       <div className="flex items-center gap-2">
         {/* Mobile menu: show compact links */}
         <Link to="/admin/products" className="sm:hidden underline text-sm">
-          All Products
+          Products
+        </Link>
+        <Link to="/admin/blogs" className="sm:hidden underline text-sm">
+          Blog
         </Link>
         <Link to="/admin/products/new" className="sm:hidden underline text-sm">
           Add

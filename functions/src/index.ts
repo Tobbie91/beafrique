@@ -82,6 +82,51 @@ export const createCheckoutSession = functions.https.onRequest(async (req, res) 
   }
 });
 
+// Send notifications (optional - requires environment variables)
+async function sendOrderNotifications(orderData: any) {
+  const promises = [];
+
+  // WhatsApp via Twilio
+  const twilioSid = process.env.TWILIO_ACCOUNT_SID || functions.config().twilio?.sid;
+  const twilioToken = process.env.TWILIO_AUTH_TOKEN || functions.config().twilio?.token;
+  const twilioFrom = process.env.TWILIO_WHATSAPP_FROM || functions.config().twilio?.from;
+  const adminWhatsApp = process.env.ADMIN_WHATSAPP || functions.config().admin?.whatsapp;
+
+  if (twilioSid && twilioToken && twilioFrom && adminWhatsApp) {
+    const twilio = require("twilio")(twilioSid, twilioToken);
+    const message = `🎉 NEW ORDER!\n\nOrder: ${orderData.orderId}\nAmount: ${orderData.currency.toUpperCase()} ${(orderData.amount / 100).toFixed(2)}\nCustomer: ${orderData.customerEmail || "N/A"}\n\nView in Stripe dashboard.`;
+    promises.push(
+      twilio.messages.create({
+        from: twilioFrom,
+        to: adminWhatsApp,
+        body: message
+      }).then(() => console.log("✅ WhatsApp sent"))
+        .catch((e: any) => console.error("❌ WhatsApp failed:", e.message))
+    );
+  }
+
+  // Email via SendGrid
+  const sendgridKey = process.env.SENDGRID_API_KEY || functions.config().sendgrid?.key;
+  const adminEmail = process.env.ADMIN_EMAIL || functions.config().admin?.email || "Bukonla@beafrique.com";
+
+  if (sendgridKey) {
+    const sgMail = require("@sendgrid/mail");
+    sgMail.setApiKey(sendgridKey);
+    const html = `<h2>🎉 New Order: ${orderData.orderId}</h2><p>Amount: ${orderData.currency.toUpperCase()} ${(orderData.amount / 100).toFixed(2)}</p><p>Customer: ${orderData.customerEmail || "N/A"}</p>`;
+    promises.push(
+      sgMail.send({
+        to: adminEmail,
+        from: "orders@beafrique.com",
+        subject: `🛍️ New Order: ${orderData.orderId}`,
+        html
+      }).then(() => console.log("✅ Email sent"))
+        .catch((e: any) => console.error("❌ Email failed:", e.message))
+    );
+  }
+
+  await Promise.allSettled(promises);
+}
+
 // Webhook (Gen-1)
 export const stripeWebhook = functions.https.onRequest(async (req, res) => {
   if (req.method !== "POST") { res.status(405).send("Method not allowed"); return; }
@@ -98,15 +143,35 @@ export const stripeWebhook = functions.https.onRequest(async (req, res) => {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
       const full = await stripe.checkout.sessions.retrieve(session.id, {
-        expand: ["line_items.data.price.product"],
+        expand: ["line_items.data.price.product", "customer", "shipping_cost"],
       });
 
+      const orderData = {
+        orderId: full.metadata?.orderId || session.id,
+        sessionId: session.id,
+        amount: session.amount_total,
+        currency: session.currency,
+        paymentStatus: session.payment_status,
+        customerEmail: session.customer_details?.email,
+        customerPhone: session.customer_details?.phone,
+        shippingName: full.shipping_details?.name,
+        items: (full.line_items?.data || []).map((li) => ({
+          description: li.description,
+          qty: li.quantity,
+          amount: li.amount_total,
+        })),
+      };
+
+      // Save to Firestore
       await db.collection("orders").doc(session.id).set({
         stripe_session_id: session.id,
         amount_total: session.amount_total,
         currency: session.currency,
         payment_status: session.payment_status,
         customer_email: session.customer_details?.email || null,
+        customer_phone: session.customer_details?.phone || null,
+        shipping_name: full.shipping_details?.name || null,
+        shipping_address: full.shipping_details?.address || null,
         created_at: new Date(),
         line_items: (full.line_items?.data || []).map((li) => ({
           description: li.description,
@@ -115,6 +180,10 @@ export const stripeWebhook = functions.https.onRequest(async (req, res) => {
           metadata: (li.price?.product as any)?.metadata || {},
         })),
       });
+
+      // Send notifications
+      await sendOrderNotifications(orderData);
+      console.log("📦 Order processed:", orderData.orderId);
     }
 
     res.json({ received: true }); return;

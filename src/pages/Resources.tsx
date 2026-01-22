@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import { Check, ChevronRight, Star } from "lucide-react";
 
 const BOOK_COVER =
-  "https://res.cloudinary.com/dbl85m2kz/image/upload/v1761099321/gzlzsbsstwvfbe0nqydf.jpg"; // TODO: replace with your Cloudinary URL
-const BOOK_LINK = "https://buy.stripe.com/cNi28s0iyfbQfFxdtT4gg00";
+  "https://res.cloudinary.com/dbl85m2kz/image/upload/v1761099321/gzlzsbsstwvfbe0nqydf.jpg";
+const BOOK_LINK = "https://buy.stripe.com/fZucN6c1gfbQdxp61r4gg01";
+const BOOK_PRICE = "£20";
 
 export default function Book() {
   return (
@@ -22,6 +23,9 @@ export default function Book() {
               Practical, step‑by‑step guidance to professionalize your sewing
               craft, attract premium clients, and grow a sustainable business
               from home.
+            </p>
+            <p className="mt-4 text-2xl font-bold text-emerald-700">
+              {BOOK_PRICE}
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -95,14 +99,15 @@ export default function Book() {
             <h3 className="text-white text-2xl font-bold">
               Turn your sewing skills into reliable income
             </h3>
+            <p className="text-yellow-300 text-lg font-semibold mt-1">Only {BOOK_PRICE}</p>
           </div>
           <a
             href={BOOK_LINK}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-yellow-300 text-emerald-900 px-6 py-3 font-semibold shadow hover:bg-yellow-400 transition"
+            className="inline-flex items-center gap-2 rounded-full bg-yellow-300 text-emerald-900 px-6 py-3 font-semibold shadow hover:bg-yellow-400 transition whitespace-nowrap"
           >
-            Get the Book <ChevronRight className="w-4 h-4" />
+            Get the Book — {BOOK_PRICE} <ChevronRight className="w-4 h-4" />
           </a>
         </div>
       </section>
@@ -155,6 +160,7 @@ export function FeaturedBook() {
             Learn proven steps to professionalize your sewing craft and build
             consistent income from home.
           </p>
+          <p className="mt-2 text-xl font-bold text-emerald-700">{BOOK_PRICE}</p>
           <div className="mt-5 flex gap-3">
             <Link
               to="/resources"

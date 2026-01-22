@@ -128,6 +128,9 @@ export default function Header() {
           <NavLink to="/resources" className={({ isActive }) => link(isActive)}>
             Books
           </NavLink>
+          <NavLink to="/blog" className={({ isActive }) => link(isActive)}>
+            Blog
+          </NavLink>
           <NavLink to="/contact" className={({ isActive }) => link(isActive)}>
             Contact Us
           </NavLink>
@@ -215,6 +218,13 @@ export default function Header() {
               className={({ isActive }) => link(isActive)}
             >
               Books
+            </NavLink>
+            <NavLink
+              to="/blog"
+              onClick={() => setOpen(false)}
+              className={({ isActive }) => link(isActive)}
+            >
+              Blog
             </NavLink>
             <NavLink
               to="/catalogue"

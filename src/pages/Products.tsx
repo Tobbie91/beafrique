@@ -8,7 +8,7 @@ type HomeCardProduct = {
   slug: string;
   name: string;
   image: string;
-  // you can add more optional fields if your CatalogueCards ever needs them
+  isOutOfStock?: boolean;
 };
 
 type FirestoreProduct = {
@@ -16,7 +16,8 @@ type FirestoreProduct = {
   title: string;
   primary_image_url?: string;
   is_active?: boolean;
-  uk_url?: string;       
+  uk_url?: string;
+  collection?: string | null;
   [k: string]: any;
 };
 
@@ -46,21 +47,28 @@ export default function Products() {
   if (error)   return <div className="container py-10 text-red-600">Error: {error}</div>;
   if (!items.length) return <div className="container py-10">No products yet.</div>;
 
+  const cards: HomeCardProduct[] = items.map(p => {
+    // Check if all variants are out of stock
+    const variants = p.variants || [];
+    const isOutOfStock = variants.length > 0 && variants.every((v: any) => (v.stock || 0) <= 0);
 
-  const cards: HomeCardProduct[] = items.map(p => ({
-    slug: p.slug,
-    name: p.title,
-    image: p.primary_image_url || "",  
-  }));
+    return {
+      slug: p.slug,
+      name: p.title,
+      image: p.primary_image_url || "",
+      isOutOfStock,
+    };
+  });
 
   const getOutsideLink = (p: HomeCardProduct) => {
     const src = items.find(x => x.slug === p.slug);
-    return src?.uk_url || undefined; 
+    return src?.uk_url || undefined;
   };
 
   return (
     <div className="container py-10">
       <h1 className="text-2xl md:text-3xl font-bold mb-6">Catalogue</h1>
+
       {/* @ts-ignore */}
       <CatalogueCards items={cards} getOutsideLink={getOutsideLink} />
     </div>
