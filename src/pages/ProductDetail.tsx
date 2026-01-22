@@ -427,8 +427,8 @@ export default function ProductDetail() {
                     {
                       slug,
                       qty: 1,
-                      size: activeVariant?.size || "",
-                      color: activeVariant?.color || "",
+                      size: size || "",
+                      color: color || "",
                       amount: Math.round(unitPrice * 100),
                       currency: (product?.currency || "GBP").toLowerCase(),
                     },

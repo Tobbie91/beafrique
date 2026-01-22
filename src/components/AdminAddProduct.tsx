@@ -496,8 +496,11 @@ if (compare_at_cents && hasSale) payload.compare_at_cents = compare_at_cents;
                         value={variant.stock}
                         onChange={(e) => {
                           const newVariants = [...variants];
-                          newVariants[idx].stock = parseInt(e.target.value) || 0;
-                          setVariants(newVariants);
+                          const variant = newVariants[idx];
+                          if (variant) {
+                            variant.stock = parseInt(e.target.value) || 0;
+                            setVariants(newVariants);
+                          }
                         }}
                         placeholder="Stock"
                       />
