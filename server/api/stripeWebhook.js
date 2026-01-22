@@ -134,7 +134,7 @@ View full details in your Stripe dashboard.`;
 // Email notification via Resend (requires RESEND_API_KEY)
 async function sendEmailNotification(orderData) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "Bukonla@beafrique.com";
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "beafrique25@gmail.com";
   const FROM_EMAIL = process.env.FROM_EMAIL || "onboarding@resend.dev";
 
   if (!RESEND_API_KEY) {
