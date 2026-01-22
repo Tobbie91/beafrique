@@ -1,15 +1,26 @@
-// server/api/debugFirestore.ts
-import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { db } from "../lib/firebase";
-// import { db } from "../lib/firebase";
+// server/api/debugFirestore.js
+const admin = require("firebase-admin");
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+// Initialize Firebase Admin if not already initialized
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    })
+  });
+}
+
+const db = admin.firestore();
+
+module.exports = async (req, res) => {
   try {
     const doc = await db.doc("products/hanna-jacket").get();
     if (!doc.exists) {
       return res.status(200).json({ ok: false, reason: "doc_missing" });
     }
-    const d = doc.data() as any;
+    const d = doc.data();
     res.status(200).json({
       ok: true,
       data: {
@@ -20,7 +31,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         is_active: d.is_active,
       },
     });
-  } catch (e: any) {
+  } catch (e) {
     res.status(200).json({ ok: false, error: e?.message || String(e) });
   }
-}
+};
