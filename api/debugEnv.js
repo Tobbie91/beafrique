@@ -12,6 +12,7 @@ module.exports = (req, res) => {
     hasPrivateKey: !!privateKey,
     privateKeyLength: privateKey ? privateKey.length : 0,
     privateKeyStart: privateKey ? privateKey.substring(0, 50) : null,
+    privateKeyEnd: privateKey ? privateKey.substring(privateKey.length - 50) : null,
     privateKeyContainsBackslashN: privateKey ? privateKey.includes('\\n') : false,
     privateKeyContainsNewline: privateKey ? privateKey.includes('\n') : false,
   });
