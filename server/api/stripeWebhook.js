@@ -131,23 +131,23 @@ View full details in your Stripe dashboard.`;
   }
 }
 
-// Email notification via SendGrid (optional - requires SENDGRID_API_KEY)
+// Email notification via Resend (requires RESEND_API_KEY)
 async function sendEmailNotification(orderData) {
-  const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "Bukonla@beafrique.com";
   const FROM_EMAIL = process.env.FROM_EMAIL || "orders@beafrique.com";
 
-  if (!SENDGRID_API_KEY) {
-    console.log("⚠️ Email notification skipped - SendGrid API key not configured");
+  if (!RESEND_API_KEY) {
+    console.log("⚠️ Email notification skipped - Resend API key not configured");
     return;
   }
 
   try {
-    const sgMail = require("@sendgrid/mail");
-    sgMail.setApiKey(SENDGRID_API_KEY);
+    const { Resend } = require("resend");
+    const resend = new Resend(RESEND_API_KEY);
 
     const itemsList = orderData.items
-      .map(item => `<tr><td>${item.description}</td><td>${item.qty}</td><td>${orderData.currency.toUpperCase()} ${(item.amount / 100).toFixed(2)}</td></tr>`)
+      .map(item => `<tr><td style="padding: 8px; border-bottom: 1px solid #e5e7eb;">${item.description}</td><td style="padding: 8px; border-bottom: 1px solid #e5e7eb;">${item.qty}</td><td style="padding: 8px; border-bottom: 1px solid #e5e7eb;">${orderData.currency.toUpperCase()} ${(item.amount / 100).toFixed(2)}</td></tr>`)
       .join("");
 
     const htmlContent = `
@@ -155,26 +155,26 @@ async function sendEmailNotification(orderData) {
         <h2 style="color: #059669;">🎉 New Order Received!</h2>
 
         <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
-          <p><strong>Order ID:</strong> ${orderData.orderId}</p>
-          <p><strong>Total Amount:</strong> ${orderData.currency.toUpperCase()} ${(orderData.amount / 100).toFixed(2)}</p>
-          <p><strong>Payment Status:</strong> ${orderData.paymentStatus}</p>
+          <p style="margin: 5px 0;"><strong>Order ID:</strong> ${orderData.orderId}</p>
+          <p style="margin: 5px 0;"><strong>Total Amount:</strong> ${orderData.currency.toUpperCase()} ${(orderData.amount / 100).toFixed(2)}</p>
+          <p style="margin: 5px 0;"><strong>Payment Status:</strong> ${orderData.paymentStatus}</p>
         </div>
 
-        <h3>Customer Details</h3>
-        <p><strong>Email:</strong> ${orderData.customerEmail || "N/A"}</p>
-        <p><strong>Phone:</strong> ${orderData.customerPhone || "N/A"}</p>
+        <h3 style="color: #1f2937; margin-top: 25px;">Customer Details</h3>
+        <p style="margin: 5px 0;"><strong>Email:</strong> ${orderData.customerEmail || "N/A"}</p>
+        <p style="margin: 5px 0;"><strong>Phone:</strong> ${orderData.customerPhone || "N/A"}</p>
 
-        <h3>Shipping Address</h3>
-        <p><strong>Name:</strong> ${orderData.shippingName || "N/A"}</p>
-        <p>${orderData.shippingAddress || "N/A"}</p>
+        <h3 style="color: #1f2937; margin-top: 25px;">Shipping Address</h3>
+        <p style="margin: 5px 0;"><strong>Name:</strong> ${orderData.shippingName || "N/A"}</p>
+        <p style="margin: 5px 0; white-space: pre-line;">${orderData.shippingAddress || "N/A"}</p>
 
-        <h3>Order Items</h3>
-        <table style="width: 100%; border-collapse: collapse;">
+        <h3 style="color: #1f2937; margin-top: 25px;">Order Items</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
           <thead>
             <tr style="background: #f3f4f6;">
-              <th style="padding: 10px; text-align: left;">Item</th>
-              <th style="padding: 10px; text-align: left;">Qty</th>
-              <th style="padding: 10px; text-align: left;">Price</th>
+              <th style="padding: 10px; text-align: left; border-bottom: 2px solid #d1d5db;">Item</th>
+              <th style="padding: 10px; text-align: left; border-bottom: 2px solid #d1d5db;">Qty</th>
+              <th style="padding: 10px; text-align: left; border-bottom: 2px solid #d1d5db;">Price</th>
             </tr>
           </thead>
           <tbody>
@@ -182,20 +182,24 @@ async function sendEmailNotification(orderData) {
           </tbody>
         </table>
 
-        <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-          <a href="https://dashboard.stripe.com/test/payments/${orderData.sessionId}" style="background: #059669; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">View in Stripe Dashboard</a>
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center;">
+          <a href="https://dashboard.stripe.com/payments/${orderData.sessionId}" style="display: inline-block; background: #059669; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600;">View in Stripe Dashboard</a>
+        </div>
+
+        <p style="margin-top: 30px; text-align: center; color: #6b7280; font-size: 12px;">
+          This is an automated notification from beafrique.com
         </p>
       </div>
     `;
 
-    await sgMail.send({
-      to: ADMIN_EMAIL,
+    await resend.emails.send({
       from: FROM_EMAIL,
+      to: ADMIN_EMAIL,
       subject: `🛍️ New Order: ${orderData.orderId}`,
       html: htmlContent,
     });
 
-    console.log("✅ Email notification sent successfully");
+    console.log("✅ Email notification sent successfully to", ADMIN_EMAIL);
   } catch (error) {
     console.error("❌ Email notification failed:", error.message);
   }
