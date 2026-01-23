@@ -140,6 +140,7 @@ function pickSpecs(desc?: string): string[] {
 
 export default function ProductDetail() {
   const [busy, setBusy] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const { slug = "" } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [variants, setVariants] = useState<Variant[]>([]);
@@ -420,6 +421,7 @@ export default function ProductDetail() {
             disabled={busy || isOutOfStock}
             onClick={async () => {
               if (isOutOfStock) return;
+              setCheckoutError(null); // Clear previous errors
               setBusy(true);
               try {
                 await startCheckout({
@@ -434,6 +436,9 @@ export default function ProductDetail() {
                     },
                   ],
                 });
+              } catch (err: any) {
+                console.error('Buy now error:', err);
+                setCheckoutError(err?.message || 'Failed to start checkout. Please try again.');
               } finally {
                 setBusy(false);
               }
@@ -460,6 +465,13 @@ export default function ProductDetail() {
             {isOutOfStock ? "Out of stock" : "Add to cart"}
           </button>
         </div>
+
+        {checkoutError && (
+          <div className="mt-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800">
+            <p className="font-semibold">Checkout Error</p>
+            <p className="text-sm mt-1">{checkoutError}</p>
+          </div>
+        )}
       </div>
     </div>
   );

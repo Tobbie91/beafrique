@@ -11,6 +11,7 @@ const SHIPPING_FEE = 3.5;     // £3.50
 export default function Checkout() {
   const { items, setQty, remove } = useCart();
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const subtotal = useMemo(
     () => items.reduce((s, i) => s + (i.price || 0) * i.qty, 0),
@@ -33,19 +34,27 @@ export default function Checkout() {
   }
 
   async function pay() {
+    setError(null); // Clear previous errors
     setBusy(true);
-    await startCheckout({
-      items: items.map(i => ({
-        slug: i.slug,
-        qty: i.qty,
-        size: i.size ?? undefined,
-        color: i.color ?? undefined,
-        amount: Math.round((i.price || 0) * 100),
-        currency: "gbp",
-      })),
-      // (optional) send email if you have it, else Stripe will ask
-      // email: userEmail,
-    });
+    try {
+      await startCheckout({
+        items: items.map(i => ({
+          slug: i.slug,
+          qty: i.qty,
+          size: i.size ?? undefined,
+          color: i.color ?? undefined,
+          amount: Math.round((i.price || 0) * 100),
+          currency: "gbp",
+        })),
+        // (optional) send email if you have it, else Stripe will ask
+        // email: userEmail,
+      });
+    } catch (err: any) {
+      console.error('Payment error:', err);
+      setError(err?.message || 'Failed to process payment. Please try again.');
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -129,6 +138,13 @@ export default function Checkout() {
         <p className="mt-2 text-[12px] text-gray-500">
           Final delivery cost is applied in Stripe Checkout based on these rules.
         </p>
+
+        {error && (
+          <div className="mt-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-800 text-sm">
+            <p className="font-semibold">Payment Error</p>
+            <p className="mt-1">{error}</p>
+          </div>
+        )}
 
         <button
           onClick={pay}

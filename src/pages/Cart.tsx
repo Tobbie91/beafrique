@@ -6,11 +6,13 @@ import { useState } from "react";
 export default function CartPage() {
   const { items, setQty, remove, clear } = useCart();
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const hasItems = items.length > 0;
 
   const checkout = async () => {
     if (!hasItems) return;
+    setError(null); // Clear previous errors
     setBusy(true);
     try {
       await startCheckout({
@@ -23,6 +25,9 @@ export default function CartPage() {
           currency: (i.currency || "gbp").toLowerCase(),
         })),
       });
+    } catch (err: any) {
+      console.error('Checkout error:', err);
+      setError(err?.message || 'Failed to start checkout. Please try again.');
     } finally {
       setBusy(false);
     }
@@ -112,6 +117,13 @@ export default function CartPage() {
               </li>
             ))}
           </ul>
+
+          {error && (
+            <div className="mt-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800">
+              <p className="font-semibold">Checkout Error</p>
+              <p className="text-sm mt-1">{error}</p>
+            </div>
+          )}
 
           <div className="mt-6 flex gap-3">
             <button
