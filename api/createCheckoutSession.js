@@ -48,11 +48,6 @@ async function buildLineItem(raw, idx) {
             color: raw?.color ? String(raw.color) : "",
           },
         },
-        metadata: {
-          productSlug: slug,
-          size: raw?.size ? String(raw.size) : "",
-          color: raw?.color ? String(raw.color) : "",
-        },
       },
     };
   }
@@ -70,11 +65,6 @@ async function buildLineItem(raw, idx) {
             size: raw?.size ? String(raw.size) : "",
             color: raw?.color ? String(raw.color) : "",
           },
-        },
-        metadata: {
-          productSlug: slug,
-          size: raw?.size ? String(raw.size) : "",
-          color: raw?.color ? String(raw.color) : "",
         },
       },
     };

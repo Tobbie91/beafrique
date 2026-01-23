@@ -9,7 +9,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../store/cart";
 import { startCheckout } from "../lib/checkout";
 
@@ -149,6 +149,7 @@ export default function ProductDetail() {
   const [hero, setHero] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const add = useCart((s) => s.add);
+  const navigate = useNavigate();
 
   const activeVariant = useMemo(
     () =>
@@ -175,6 +176,7 @@ export default function ProductDetail() {
       price: unitPrice, // <-- IMPORTANT
       currency: (product?.currency || "GBP").toLowerCase(),
     });
+    navigate('/cart');
   }
 
   function handleBuyNow() {
