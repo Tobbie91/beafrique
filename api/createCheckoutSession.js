@@ -103,26 +103,25 @@ module.exports = async (req, res) => {
       if (typeof unit === "number") subtotalMinor += unit * qty;
     }
 
-    // Shipping options (Pickup + Delivery with £0 >= £100 else £3.50)
+    // Shipping options (£3.50 for orders under £100, free for £100+)
+    // Note: Stripe doesn't allow amount:0 in shipping_rate_data, so we handle free shipping differently
     const FREE_THRESHOLD = 10000; // £100
-    const shipping_options = [
-      {
+    const shipping_options = [];
+
+    if (subtotalMinor >= FREE_THRESHOLD) {
+      // Free shipping for orders >= £100 - don't add shipping options, let customer choose address
+      // Shipping will be free by default when no shipping_options are provided
+    } else {
+      // For orders < £100, offer paid delivery option
+      shipping_options.push({
         shipping_rate_data: {
-          display_name: "Store pickup (Portsmouth)",
+          display_name: "Standard delivery (FREE for orders over £100)",
           type: "fixed_amount",
-          fixed_amount: { amount: 0, currency },
-          delivery_estimate: { minimum: { unit: "business_day", value: 0 }, maximum: { unit: "business_day", value: 1 } }
-        }
-      },
-      {
-        shipping_rate_data: {
-          display_name: "Standard delivery",
-          type: "fixed_amount",
-          fixed_amount: { amount: subtotalMinor >= FREE_THRESHOLD ? 0 : 350, currency },
+          fixed_amount: { amount: 350, currency }, // £3.50
           delivery_estimate: { minimum: { unit: "business_day", value: 2 }, maximum: { unit: "business_day", value: 5 } }
         }
-      }
-    ];
+      });
+    }
 
     const hdrProto = req.headers["x-forwarded-proto"];
     const hdrHost  = req.headers["x-forwarded-host"];
@@ -134,20 +133,26 @@ module.exports = async (req, res) => {
 
     const orderId = body.orderId || `ord_${Date.now()}`;
 
-    const session = await stripe.checkout.sessions.create({
+    const sessionConfig = {
       mode: "payment",
       line_items,
       payment_method_types: ["card", "klarna", "revolut_pay", "link", "paypal"],
       customer_email: body.email || undefined,
       phone_number_collection: { enabled: true },
       shipping_address_collection: { allowed_countries: ["GB","IE","FR","DE","US","CA","NG"] },
-      // shipping_options, // <-- TEMPORARILY DISABLED TO TEST
       billing_address_collection: "auto",
       success_url: `${returnUrl}/checkout/success?oid=${encodeURIComponent(orderId)}&sid={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${returnUrl}/checkout/cancel?oid=${encodeURIComponent(orderId)}`,
       metadata: { orderId },
       payment_intent_data: { metadata: { orderId } },
-    });
+    };
+
+    // Only include shipping_options if we have any (for orders < £100)
+    if (shipping_options.length > 0) {
+      sessionConfig.shipping_options = shipping_options;
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     return res.status(200).json({ url: session.url });
   } catch (err) {
