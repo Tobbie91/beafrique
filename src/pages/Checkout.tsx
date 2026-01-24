@@ -34,6 +34,13 @@ export default function Checkout() {
   }
 
   async function pay() {
+    // Validate all items have valid prices
+    const invalidItems = items.filter(i => !i.price || i.price <= 0);
+    if (invalidItems.length > 0) {
+      setError('Some items have invalid prices. Please remove them and try again.');
+      return;
+    }
+
     setError(null); // Clear previous errors
     setBusy(true);
     try {

@@ -166,6 +166,10 @@ export default function ProductDetail() {
 
   function handleAddToCart() {
     if (isOutOfStock) return;
+    if (unitPrice <= 0) {
+      setCheckoutError('Product price is not available. Please wait for the product to load or contact support.');
+      return;
+    }
     add({
       slug,
       qty: 1,
@@ -423,6 +427,10 @@ export default function ProductDetail() {
             disabled={busy || isOutOfStock}
             onClick={async () => {
               if (isOutOfStock) return;
+              if (unitPrice <= 0) {
+                setCheckoutError('Product price is not available. Please wait for the product to load or contact support.');
+                return;
+              }
               setCheckoutError(null); // Clear previous errors
               setBusy(true);
               try {
