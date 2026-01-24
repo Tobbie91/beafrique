@@ -141,7 +141,7 @@ module.exports = async (req, res) => {
       customer_email: body.email || undefined,
       phone_number_collection: { enabled: true },
       shipping_address_collection: { allowed_countries: ["GB","IE","FR","DE","US","CA","NG"] },
-      shipping_options, // <-- IMPORTANT: now passed in
+      // shipping_options, // <-- TEMPORARILY DISABLED TO TEST
       billing_address_collection: "auto",
       success_url: `${returnUrl}/checkout/success?oid=${encodeURIComponent(orderId)}&sid={CHECKOUT_SESSION_ID}`,
       cancel_url:  `${returnUrl}/checkout/cancel?oid=${encodeURIComponent(orderId)}`,
